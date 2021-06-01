@@ -2,9 +2,11 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import UserModel from '../models/v1/user.model.js';
 import MSG from '../constant/message.constant.js';
+import catchAsync from '../utils/catchAsync.js';
+import AppError from '../utils/AppError.js';
 
-const protect = async (req, res, next) => {
-    try {
+const protect = catchAsync(
+    async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
         let jwtToken, decoded;
 
@@ -18,14 +20,14 @@ const protect = async (req, res, next) => {
 
         } else {
 
-            return res.status(401).json({ message: MSG.NOT_AUTHORIZED });
+            return next(new AppError(MSG.NOT_AUTHORIZED, 401))
         }
 
         decoded = await promisify(jwt.verify)(jwtToken, secret);
 
-        const existingUser = await UserModel.findById(decoded.id).exec();
+        const existingUser = await UserModel.findById(decoded.id);
 
-        if (!existingUser) return res.status(401).json({ message: MSG.NOT_AUTHORIZED });
+        if (!existingUser) return next(new AppError(MSG.NOT_AUTHORIZED, 401))
 
         existingUser._id = null;
 
@@ -38,10 +40,7 @@ const protect = async (req, res, next) => {
         res.user = existingUser;
 
         next();
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ message: MSG.SERVER_ERROR });
     }
-}
+);
 
 export default protect;

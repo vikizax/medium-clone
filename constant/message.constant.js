@@ -20,5 +20,7 @@ export default {
     DOCUMENT_DELETE: 'Document deleted.',
     DUCUMENTS_DELETE: 'Documents deleted.',
     DOCUMENT_UPDATE: 'Document updated.',
-    EMPTY_CREDENTIALS: 'Please provide email and password.'
+    EMPTY_CREDENTIALS: 'Please provide email and password.',
+    INVALID_TOKEN: 'Invalid Token. Please Sign-in again.',
+    TOKEN_EXPIRED: 'Token expired. Please Sign-in again.'
 }

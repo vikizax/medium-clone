@@ -1,19 +1,21 @@
+import { Router } from 'express';
 import { getAll, deleteOne, getOne } from '../../controllers/v1/user.controller.js';
 import { isLoggedIn } from '../../controllers/v1/authentication.controller.js';
-export default router => {
 
-    // get logged in user details
-    router
-        .route('/user')
-        .get(isLoggedIn)
+const router = Router();
 
-    router
-        .route('/user/:id')
-        .get(getOne)
-        .delete(deleteOne);
+// get logged in user details
+router
+    .route('/current')
+    .get(isLoggedIn)
 
-    router
-        .route('/users')
-        .get(getAll);
+router
+    .route('/:id')
+    .get(getOne)
+    .delete(deleteOne);
 
-}
+router
+    .route('/')
+    .get(getAll);
+
+export default router;

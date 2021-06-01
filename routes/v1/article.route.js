@@ -1,19 +1,17 @@
+import { Router } from 'express';
 import { create, getAll, deleteAll, get, deleteOne } from '../../controllers/v1/article.controller.js';
 
-export default (router) => {
+const router = Router();
 
-    router
-        .route('/article')
-        .post(create);
+router
+    .route('/')
+    .post(create)
+    .get(getAll)
+    .delete(deleteAll);
 
-    router
-        .route('/article/:id')
-        .get(get)
-        .delete(deleteOne);
+router
+    .route('/:id')
+    .get(get)
+    .delete(deleteOne);
 
-    router
-        .route('/articles')
-        .get(getAll)
-        .delete(deleteAll);
-
-}
+export default router;
