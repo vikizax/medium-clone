@@ -5,6 +5,7 @@ import MSG from '../constant/message.constant.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 
+
 const protect = catchAsync(
     async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
