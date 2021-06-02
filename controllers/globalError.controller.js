@@ -13,14 +13,14 @@ const handleDuplicateField = error => {
 }
 
 const handleValidationError = error => {
-    const err = Object.value(err.errors).map(e => e.message);
+    const err = Object.values(error.errors).map(e => e.message);
     const message = `Invalid input fields. ${err.join('. ')}.`
     return new AppError(message, 400);
 }
 
-const handleJWTError = error => new AppError(MSG.INVALID_TOKEN, 401);
+const handleJWTError = () => new AppError(MSG.INVALID_TOKEN, 401);
 
-const handleJWTExpiredError = error => new AppError(MSG.TOKEN_EXPIRED, 401);
+const handleJWTExpiredError = () => new AppError(MSG.TOKEN_EXPIRED, 401);
 
 const sendError = (err, req, res) => {
 
@@ -40,7 +40,7 @@ const sendError = (err, req, res) => {
 
 export default (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
-    err.status = error.status || 'error';
+    err.status = err.status || 'error';
 
     let error = { ...err };
     error.message = err.message;

@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
 import UserModel from '../../models/v1/user.model.js';
 import MSG from '../../constant/message.constant.js';
-import { promisify } from 'util';
 import catchAsync from '../../utils/catchAsync.js';
 import AppError from '../../utils/AppError.js';
 
@@ -42,24 +42,28 @@ export const signIn = catchAsync(
 
         const jwtToken = signToken(existingUser.email, existingUser._id, secret);
 
-        existingUser._id = null;
+        const result = existingUser.toJSON();
 
-        sendSignedTokenCookie(res, MSG.SIGN_IN_SUCCESS, existingUser, jwtToken);
+        delete result.password;
+        delete result['__v'];
+
+        sendSignedTokenCookie(res, MSG.SIGN_IN_SUCCESS, result, jwtToken);
     }
 );
 
 export const signUp = catchAsync(
     async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
+
         const { email, password, firstName, lastName } = req.body;
 
         const existingUser = await UserModel.findOne({ email });
 
         if (existingUser) return next(new AppError(MSG.USER_EXIST, 409));
 
-        const hashPassword = await bcrypt.hash(password, 12);
+        // const hashPassword = await bcrypt.hash(password, 12);
 
-        const result = await UserModel.create({ email, password: hashPassword, firstName, lastName });
+        const result = await UserModel.create({ email, password, firstName, lastName });
 
         const jwtToken = signToken(result.email, result.id, secret);
 
@@ -70,7 +74,6 @@ export const signUp = catchAsync(
 export const isLoggedIn = async (req, res, next) => {
     if (req.cookies.jwt) {
         try {
-
             const decoded =
                 await promisify(jwt.verify)
                     (
@@ -83,9 +86,7 @@ export const isLoggedIn = async (req, res, next) => {
 
             if (!currentUser) return next();
 
-            currentUser._id = null;
-
-            res.user = currentUser;
+            return res.status(200).json(currentUser);
 
         } catch (error) {
             return next()

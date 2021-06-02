@@ -4,7 +4,7 @@ import { signIn, signUp } from '../../controllers/v1/authentication.controller.j
 const router = Router();
 
 router
-    .route('/sigin')
+    .route('/signin')
     .post(signIn);
 
 router

@@ -5,7 +5,6 @@ import MSG from '../constant/message.constant.js';
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 
-
 const protect = catchAsync(
     async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
@@ -30,15 +29,12 @@ const protect = catchAsync(
 
         if (!existingUser) return next(new AppError(MSG.NOT_AUTHORIZED, 401))
 
-        existingUser._id = null;
-
         req.user = {
             ...req.user,
-            email: decoded.email,
-            id: decoded.id
+            email: existingUser.email,
+            id: existingUser.id,
+            role: existingUser.role
         }
-
-        res.user = existingUser;
 
         next();
     }

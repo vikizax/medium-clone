@@ -9,7 +9,7 @@ const ArticleSchema = new mongoose.Schema(
         },
         displayImage: {
             type: String,
-            required: [true, 'Display image is missing']
+            required: [true, 'Display image is missing'],
         },
         blocks:
         {

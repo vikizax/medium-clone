@@ -4,7 +4,7 @@ import MSG from '../constant/message.constant.js';
 
 export default {
     createOne: Model => {
-        catchAsync(
+        return catchAsync(
             async (req, res, next) => {
                 const doc = await Model.create(req.body);
                 res.status(201).json({
@@ -16,7 +16,7 @@ export default {
     },
 
     getOne: (Model, popOptions) => {
-        catchAsync(
+        return catchAsync(
             async (req, res, next) => {
                 let query = Model.findById(req.params.id);
 
@@ -35,7 +35,7 @@ export default {
     },
 
     getAll: (Model, popOptions) => {
-        catchAsync(
+        return catchAsync(
             async (req, res, next) => {
                 let query = Model.find();
 
@@ -53,9 +53,9 @@ export default {
             }
         )
     },
-    
+
     deleteOne: Model => {
-        catchAsync(
+        return catchAsync(
             async (req, res, next) => {
                 const doc = await Model.findByIdAndDelete(req.params.id);
 
@@ -70,7 +70,7 @@ export default {
     },
 
     deleteAll: Model => {
-        catchAsync(
+        return catchAsync(
             async (req, res, next) => {
 
                 await Model.deleteMany({});
@@ -84,7 +84,7 @@ export default {
     },
 
     updateOne: Model => {
-        catchAsync(
+        return catchAsync(
             async (req, res, next) => {
                 const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
                     new: true,

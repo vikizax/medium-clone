@@ -5,6 +5,6 @@ export const getOne = factory.getOne(UserModel);
 
 export const getAll = factory.getAll(UserModel);
 
-export const deleteOne = factory.getOne(UserModel);
+export const deleteOne = factory.deleteOne(UserModel);
 
 export const deleteAll = factory.deleteAll(UserModel);
