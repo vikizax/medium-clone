@@ -1,16 +1,7 @@
-import EditorJS from '@editorjs/editorjs';
+import React from 'react';
+import EditorJs from 'react-editor-js';
+import { EDITOR_JS_TOOLS } from './editor.config';
 
-const Editor = () => {
+const Editor = () => <EditorJs tools={EDITOR_JS_TOOLS} />
 
-
-    const editorjs = new EditorJS({
-        placeholder: 'Start with adding a Title!',
-        holder: 'editorjs',
-        tools: {
-            header: Header
-        }
-    });
-    return (
-        <div id='editorjs'></div>
-    );
-}
+export default Editor;

@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Editor from './components/editor/editor.component';
 
 const App = () => {
-
   return (
     <div id='container'>
       <Editor />
@@ -10,6 +9,5 @@ const App = () => {
   );
 
 }
-
 
 export default App;
