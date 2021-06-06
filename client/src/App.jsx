@@ -1,30 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import EditorJs from 'react-editor-js';
-import { EDITOR_JS_TOOLS } from './components/editor/editor.config';
+import Header from './components/header/header.component';
+import CreateArticlePage from './pages/create-article-page/create-article.page';
+import HomePage from './pages/home-page/home.page';
 
 const App = () => {
-  let editorInstance = null
-  const [editorContent, setEditorContent] = useState({});
-
-  useEffect(() => {
-    return () => editorInstance.destory();
-  }, [editorInstance]);
-
-  return (<div id='container'>
-    <EditorJs
-      instanceRef={instance => editorInstance = instance}
-      placeholder='Start by adding a Header!'
-      tools={EDITOR_JS_TOOLS}
-      onChange={
-        (_, data) => {
-          setEditorContent(data);
-        }
-      }
-      logLevel='ERROR'
-    />
-  </div>
-  )
+  return (
+    <div>
+      <Header />
+      <Switch>
+        <Route exact path='/' component={HomePage} />
+        <Route path='/create' component={CreateArticlePage} />
+      </Switch>
+    </div>
+  );
 }
 
 export default App;
