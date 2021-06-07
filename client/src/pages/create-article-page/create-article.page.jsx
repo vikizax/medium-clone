@@ -31,7 +31,6 @@ const CreateArticlePage = () => {
         //
     }
 
-    console.log(editorContent)
 
     return (
         <Box p={4}>

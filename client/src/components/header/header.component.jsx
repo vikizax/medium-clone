@@ -1,9 +1,13 @@
 import React from 'react';
+import { useSetRecoilState } from 'recoil';
+
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+
+import { modalAtom } from '../sign-in-sign-up-modal/sign-in-sign-up-modal.component'
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -19,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
     const classes = useStyles();
-
+    const setModalView = useSetRecoilState(modalAtom);
     return (
 
         <AppBar
@@ -43,11 +47,11 @@ const Header = () => {
                     variant='outlined'
                     color='inherit'
                     className={classes.button}
-                    onClick={() => { }}
+                    onClick={() => setModalView(current => ({ ...current, view: !current.view }))}
                 >
                     <Typography className={classes.buttonText}>
                         Get Started
-                        </Typography>
+                    </Typography>
                 </Button>
 
             </Toolbar>
