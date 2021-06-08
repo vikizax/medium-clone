@@ -76,6 +76,7 @@ const SignUp = () => {
                 required
                 error={Boolean(emailError)}
                 helperText={emailError}
+                fullWidth
             />
             <TextField
                 className={classes.field}
@@ -86,6 +87,7 @@ const SignUp = () => {
                 required
                 error={Boolean(pwdError)}
                 helperText={pwdError}
+                fullWidth
             />
 
             <Button type='submit' variant='outlined' color='primary'>
