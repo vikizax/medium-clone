@@ -60,6 +60,13 @@ const SignUp = () => {
             return;
         }
 
+        // check speicific required
+        if (!fname) return setFNameError('First Name is required.');
+        if (!email) return setEmailError('Email is required.');
+        if (!pwd) return setPwdError('Password is required.');
+        if (!cpwd) return setConfPwdError('Confirm Pasword is required.');
+
+
         // validate format email
         if (!isEmail(email)) return setEmailError('Invalid email format.');
 

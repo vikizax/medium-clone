@@ -44,12 +44,15 @@ const SignUp = () => {
         setPwdError('');
 
         const { email, password: pwd } = formState;
+
         // check empty required field
         if (!email && !pwd) {
             setEmailError('Email is required.');
             setPwdError('Password is required.');
             return;
         }
+        if (!email) return setEmailError('Email is required.');
+        if (!pwd) return setPwdError('Password is required.');
 
         // validate format email
         if (!isEmail(email)) return setEmailError('Invalid email format.');
