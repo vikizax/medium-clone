@@ -1,13 +1,13 @@
 import React from 'react';
-import { useSetRecoilState } from 'recoil';
-
+import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import axios from 'axios';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-
-import { modalAtom } from '../sign-in-sign-up-modal/sign-in-sign-up-modal.component'
+import { modalAtom, userAtom } from '../../globalState/global.state';
+import api from '../../constant/api.constant';
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -24,6 +24,44 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
     const classes = useStyles();
     const setModalView = useSetRecoilState(modalAtom);
+    const resetUserState = useResetRecoilState(userAtom);
+    const userState = useRecoilValue(userAtom);
+
+    const getStartedBtn = (
+        <Button
+            size='small'
+            disableElevation
+            variant='outlined'
+            color='inherit'
+            className={classes.button}
+            onClick={() => setModalView(current => ({ ...current, view: !current.view }))}
+        >
+            <Typography className={classes.buttonText}>
+                Get Started
+        </Typography>
+        </Button>
+    );
+
+    const signOutBtn = (
+        <Button
+            size='small'
+            disableElevation
+            variant='outlined'
+            color='inherit'
+            className={classes.button}
+            onClick={() => signOut()}
+        >
+            <Typography className={classes.buttonText}>
+                Sign Out
+        </Typography>
+        </Button>
+    );
+
+    const signOut = async () => {
+        await axios.get(api.signout);
+        resetUserState();
+    }
+
     return (
 
         <AppBar
@@ -41,18 +79,9 @@ const Header = () => {
 
                 <div className={classes.grow} />
 
-                <Button
-                    size='small'
-                    disableElevation
-                    variant='outlined'
-                    color='inherit'
-                    className={classes.button}
-                    onClick={() => setModalView(current => ({ ...current, view: !current.view }))}
-                >
-                    <Typography className={classes.buttonText}>
-                        Get Started
-                    </Typography>
-                </Button>
+                {
+                    userState ? signOutBtn : getStartedBtn
+                }
 
             </Toolbar>
         </AppBar>

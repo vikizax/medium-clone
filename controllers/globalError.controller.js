@@ -39,6 +39,8 @@ const sendError = (err, req, res) => {
 }
 
 export default (err, req, res, next) => {
+
+
     err.statusCode = err.statusCode || 500;
     err.status = err.status || 'error';
 
@@ -50,6 +52,8 @@ export default (err, req, res, next) => {
     if (err.name === 'ValidationError') error = handleValidationError(error);
     if (err.name === 'JsonWebTokenError') error = handleJWTError(error);
     if (err.name === 'TokenExpiredError') error = handleJWTExpiredError(error);
+
+    console.log(error)
 
     sendError(error, req, res);
 }
