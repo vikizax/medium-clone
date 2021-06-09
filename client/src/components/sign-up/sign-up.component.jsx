@@ -80,7 +80,9 @@ const SignUp = () => {
 
         setLoading(true);
 
-        axios.post(api.signup, formState)
+        axios.post(api.signup, formState, {
+            withCredentials: true
+        })
             .then(response => {
                 setLoading(false);
                 setUserState(response.data.result);

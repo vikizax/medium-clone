@@ -19,7 +19,6 @@ const protect = catchAsync(
             jwtToken = req.cookies.jwt;
 
         } else {
-
             return next(new AppError(MSG.NOT_AUTHORIZED, 401))
         }
 

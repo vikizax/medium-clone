@@ -60,7 +60,9 @@ const SignUp = () => {
         if (!isEmail(email)) return setEmailError('Invalid email format.');
 
         setLoading(true);
-        axios.post(api.signin, formState)
+        axios.post(api.signin, formState, {
+            withCredentials:true
+        })
             .then(response => {
                 setUserState(response.data.result)
                 resetModalState();

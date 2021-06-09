@@ -24,7 +24,7 @@ const sendSignedTokenCookie = (request, response, msg, result, token) => {
                         Date.now() + parseInt(process.env.JWT_EXPIRES_IN_DAYS) * 24 * 60 * 60 * 1000
                     ),
                 httpOnly: true, //important
-                secure: request.secure || request.headers['x-forwarded-proto'] === 'https'
+                secure: request.headers['x-forwarded-proto'] === 'https'
             }
         )
         .json({ message: msg, result });
@@ -73,10 +73,11 @@ export const signUp = catchAsync(
     }
 );
 
-export const signOut = (_, res) => {
+export const signOut = (req, res) => {
     res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() + 1 * 1000),
-        httpOnly: true
+        httpOnly: true,
+        secure: req.headers['x-forwarded-proto'] === 'https'
     });
     res.status(200).json({ status: 'success' });
 };
@@ -90,18 +91,17 @@ export const isLoggedIn = async (req, res, next) => {
                         req.cookies.jwt,
                         process.env.SERVER_SECRET
                     );
-
             // get current logged in user details
             const currentUser = await UserModel.findById(decoded.id);
 
-            if (!currentUser) return next();
+            if (!currentUser) return res.end();
 
             return res.status(200).json(currentUser);
 
         } catch (error) {
-            return next()
+            return res.end();
         }
     }
-    next();
+    res.end();
 }
 

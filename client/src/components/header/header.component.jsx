@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Header = () => {
+const Header = ({ isLoading }) => {
     const classes = useStyles();
     const setModalView = useSetRecoilState(modalAtom);
     const resetUserState = useResetRecoilState(userAtom);
@@ -58,9 +58,17 @@ const Header = () => {
     );
 
     const signOut = async () => {
-        await axios.get(api.signout);
+        await axios.get(api.signout, { withCredentials: true });
         resetUserState();
     }
+
+    const authSection = (
+        <React.Fragment>
+            {
+                userState ? signOutBtn : getStartedBtn
+            }
+        </React.Fragment>
+    );
 
     return (
 
@@ -78,9 +86,8 @@ const Header = () => {
                     </Typography>
 
                 <div className={classes.grow} />
-
                 {
-                    userState ? signOutBtn : getStartedBtn
+                    !isLoading ? authSection : ''
                 }
 
             </Toolbar>

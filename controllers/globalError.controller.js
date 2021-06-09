@@ -52,8 +52,6 @@ export default (err, req, res, next) => {
     if (err.name === 'ValidationError') error = handleValidationError(error);
     if (err.name === 'JsonWebTokenError') error = handleJWTError(error);
     if (err.name === 'TokenExpiredError') error = handleJWTExpiredError(error);
-
-    console.log(error)
-
+    
     sendError(error, req, res);
 }
