@@ -20,3 +20,11 @@ export const editorAtom = atom({
 });
 
 
+export const alertAtom = atom({
+    key: 'alert',
+    default: {
+        hidden: true,
+        message: '',
+        severity: 'success'
+    }
+});

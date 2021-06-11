@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
@@ -12,7 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import { editorAtom, modalAtom, userAtom } from '../../global/global.state';
+import { editorAtom, modalAtom, userAtom, alertAtom } from '../../global/global.state';
 import api from '../../constant/api.constant';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,11 +42,13 @@ const useStyles = makeStyles((theme) => ({
 const Header = ({ isLoading }) => {
     const classes = useStyles();
     const setModalView = useSetRecoilState(modalAtom);
+    const setAlert = useSetRecoilState(alertAtom);
     const resetUserState = useResetRecoilState(userAtom);
     const editorContent = useRecoilValue(editorAtom);
     const userState = useRecoilValue(userAtom);
     const [anchorEl, setAnchorEl] = useState()
     const location = useLocation();
+    const history = useHistory();
 
     const signOut = async () => {
         await axios.get(api.signout, { withCredentials: true });
@@ -62,9 +64,9 @@ const Header = ({ isLoading }) => {
 
     const handleClose = () => setAnchorEl(null);
 
-    const publish = async () => {
+    const publish = () => {
 
-        const { blocks } = editorContent;
+        const { blocks, time } = editorContent;
 
         if (blocks.length == 0)
             return window.alert('Empty Article');
@@ -74,11 +76,30 @@ const Header = ({ isLoading }) => {
 
         let displayImage;
         for (let i = 0; i < blocks.length; i++) {
-            if (blocks[i] == 'image') {
-                displayImage = blocks[i].data.file.url;
-                break;
+            if (blocks[i].type === 'image') {
+                if (Boolean(blocks[i].data.file.url)) {
+                    displayImage = blocks[i].data.file.url;
+                    break;
+                } else {
+                    window.alert('Article must not contain empy image space.')
+                    return;
+                }
             }
         }
+
+        const title = blocks[0].data.text;
+
+        axios.post(
+            api.article,
+            { time, title, displayImage, blocks, author: userState._id },
+            { withCredentials: true })
+            .then(res => {
+                setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' })
+                history.push('/')
+            })
+            .catch(err => console.error(err.response))
+
+
     }
 
     const getStartedBtn = (
