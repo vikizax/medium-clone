@@ -7,7 +7,7 @@ import { makeStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import LineProgress from '@material-ui/core/LinearProgress';
-import { modalAtom, userAtom } from '../../globalState/global.state';
+import { modalAtom, userAtom } from '../../global/global.state';
 import isEmail from 'validator/lib/isEmail';
 import api from '../../constant/api.constant';
 

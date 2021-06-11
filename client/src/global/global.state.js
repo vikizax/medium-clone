@@ -10,5 +10,13 @@ export const modalAtom = atom({
 
 export const userAtom = atom({
     key: 'user',
+    default: null,
+});
+
+
+export const editorAtom = atom({
+    key: 'editor',
     default: null
-})
+});
+
+

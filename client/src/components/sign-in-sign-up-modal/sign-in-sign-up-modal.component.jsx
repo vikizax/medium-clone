@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
-import { modalAtom } from '../../globalState/global.state';
+import { modalAtom } from '../../global/global.state';
 
 
 const useStyles = makeStyles((theme) => ({

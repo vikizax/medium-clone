@@ -10,11 +10,7 @@ const protect = catchAsync(
         const secret = process.env.SERVER_SECRET;
         let jwtToken, decoded;
 
-        if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-
-            jwtToken = req.headers.authorization.split(' ')[1];
-
-        } else if (req.cookies.jwt) {
+         if (req.cookies.jwt) {
 
             jwtToken = req.cookies.jwt;
 

@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import LineProgress from '@material-ui/core/LinearProgress';
 import isEmail from 'validator/lib/isEmail';
-import { userAtom, modalAtom } from '../../globalState/global.state';
+import { userAtom, modalAtom } from '../../global/global.state';
 import api from '../../constant/api.constant';
 
 const useStyles = makeStyles({

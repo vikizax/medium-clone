@@ -69,7 +69,7 @@ export const signUp = catchAsync(
 
         const jwtToken = signToken(result.email, result.id, secret);
 
-        sendSignedTokenCookie(req, res, MSG.SIGN_UP_SUCCESS, { email: result.email, firstName: result.firstName, lastName: result.lastName }, jwtToken);
+        sendSignedTokenCookie(req, res, MSG.SIGN_UP_SUCCESS, { email: result.email, firstName: result.firstName, lastName: result.lastName, id: result.id, role: 'user' }, jwtToken);
     }
 );
 
@@ -95,6 +95,8 @@ export const isLoggedIn = async (req, res, next) => {
             const currentUser = await UserModel.findById(decoded.id);
 
             if (!currentUser) return res.end();
+
+            console.log(currentUser);
 
             return res.status(200).json(currentUser);
 
