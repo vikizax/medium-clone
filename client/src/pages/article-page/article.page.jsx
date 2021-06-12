@@ -19,7 +19,6 @@ const ArticlePage = () => {
 
     return (
         <Box p={4}>
-
             {
                 content ? (
                     <EditorJs
@@ -30,7 +29,6 @@ const ArticlePage = () => {
                     />
                 ) : ''
             }
-
         </Box>
     )
 }

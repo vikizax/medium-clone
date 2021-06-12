@@ -2,26 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import EditorJs from 'react-editor-js';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core';
 import { EDITOR_JS_TOOLS } from './editor.config';
 import { editorAtom } from '../../global/global.state';
 
-const useStyle = makeStyles((theme) => (
-    {
-        fab: {
-            position: 'fixed',
-            bottom: theme.spacing(2),
-            right: theme.spacing(2),
-            [theme.breakpoints.down('sm')]: {
-                display: 'none'
-            }
-        }
-    }
-));
-
-
 const CreateArticlePage = () => {
-    const classes = useStyle();
     const setEditoContent = useSetRecoilState(editorAtom);
     const [content, setContent] = useState('');
 

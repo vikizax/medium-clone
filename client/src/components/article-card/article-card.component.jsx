@@ -7,9 +7,10 @@ import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
+
 const useStyles = makeStyles({
     root: {
-        // backgroundColor: '',
         margin: 10
     },
     cardContent: {
@@ -37,12 +38,10 @@ const useStyles = makeStyles({
 
 const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, id }) => {
     const classes = useStyles();
-    const img = displayImage ? displayImage.replace('http://localhost:5000/', '') : ''
     const history = useHistory();
     const redirect = () => {
         history.push(`/article/${id}`);
     }
-
     return (
         <Card elevation={0} className={classes.root} onClick={redirect}>
             <Box display='flex' flexDirection='row' alignItems="center" p={2} >
@@ -69,7 +68,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                                     {subTitle}
                                 </Typography>
                                 <Typography className={classes.time} color="textSecondary">
-                                    {time}
+                                    {moment(time).format('MMMM Do YYYY')}
                                 </Typography>
                             </React.Fragment>
                         )
@@ -89,7 +88,6 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                 }
             </Box>
         </Card>
-
     )
 };
 

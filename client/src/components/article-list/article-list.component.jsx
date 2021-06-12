@@ -12,6 +12,7 @@ const ArticleList = ({ data }) => {
                         <ArticleCard
                             author={article.author.firstName + " " + article.author.lastName}
                             title={article.title}
+                            subTitle={article.subTitle}
                             displayImage={article.displayImage}
                             time={article.time}
                             key={article._id}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { useLocation, useHistory, Redirect } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
@@ -36,6 +36,12 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down('xs')]: {
             display: 'none',
         }
+    },
+    title: {
+        '&:visited': {
+            color: 'inherit'
+        },
+        textDecoration: 'none',
     }
 }));
 
@@ -101,7 +107,7 @@ const Header = ({ isLoading }) => {
                 { withCredentials: true });
 
             history.push('/');
-                
+
             setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' });
 
         } catch (err) {
@@ -238,8 +244,12 @@ const Header = ({ isLoading }) => {
             className={classes.grow}
         >
             <Toolbar>
-
-                <Typography className={classes.title} variant="h6" noWrap>
+                <Typography
+                    className={classes.title}
+                    variant="h6"
+                    component={Link}
+                    to='/'
+                    noWrap>
                     MediumClone
                 </Typography>
 
