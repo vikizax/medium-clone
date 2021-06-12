@@ -1,6 +1,7 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import MSG from '../constant/message.constant.js';
+import ArticleModel from '../models/v1/article.model.js';
 
 export default {
     createOne: Model => {
@@ -86,10 +87,13 @@ export default {
     updateOne: Model => {
         return catchAsync(
             async (req, res, next) => {
-                const doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
-                    new: true,
-                    runValidators: true
-                });
+                const doc = await Model.findOneAndUpdate(
+                    { _id: req.params.id, author: req.body.author },
+                    req.body,
+                    {
+                        new: true,
+                        runValidators: true
+                    });
 
                 if (!doc) return next(new AppError(MSG.NO_DOCUMENT, 404));
 

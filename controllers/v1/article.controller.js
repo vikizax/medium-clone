@@ -14,6 +14,9 @@ export const get = factory.getOne(ArticleModel, 'author');
 // create a article
 export const create = factory.createOne(ArticleModel);
 
+// update a article
+export const update = factory.updateOne(ArticleModel);
+
 // delete all article
 export const deleteAll = factory.deleteAll(ArticleModel);
 

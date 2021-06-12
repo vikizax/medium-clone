@@ -1,5 +1,14 @@
 import { Router } from 'express';
-import { create, getAll, deleteAll, get, deleteOne, uploadImage, uploadSuccess } from '../../controllers/v1/article.controller.js';
+import {
+    create,
+    getAll,
+    deleteAll,
+    get,
+    update,
+    deleteOne,
+    uploadImage,
+    uploadSuccess
+} from '../../controllers/v1/article.controller.js';
 import restrict from '../../middleware/restrict.middleware.js';
 import protect from '../../middleware/protect.middleware.js';
 
@@ -15,6 +24,8 @@ router.use(protect);
 router
     .route('/')
     .post(create)
+    .patch(update)
+    .delete(deleteOne)
 
 router
     .route('/uploadfile')
