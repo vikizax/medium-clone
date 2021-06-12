@@ -7,6 +7,9 @@ const ArticleSchema = new mongoose.Schema(
             type: String,
             required: [true, 'Tile is missing']
         },
+        subTitle: {
+            type: String,
+        },
         displayImage: {
             type: String,
             required: [true, 'Display image is missing'],

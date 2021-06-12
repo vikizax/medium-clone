@@ -1,18 +1,19 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-// import CardHeader from '@material-ui/core/CardHeader';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
-import { makeStyles } from '@material-ui/core'
-import Box from '@material-ui/core/Box'
-import img from './logo512.png';
-
+import { makeStyles } from '@material-ui/core';
+import Box from '@material-ui/core/Box';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { useHistory } from 'react-router-dom';
 const useStyles = makeStyles({
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
+    root: {
+        // backgroundColor: '',
+        margin: 10
+    },
+    cardContent: {
+        width: '100%'
     },
     user: {
         fontSize: 10,
@@ -24,44 +25,68 @@ const useStyles = makeStyles({
         fontSize: 10,
     },
     grow: {
-        flexGrow: 1
+        width: '20%',
     },
     cardMedia: {
         height: 100,
-        width: 100,
-        objectFit: 'cover'
-    },
+        width: '100%',
+        objectFit: 'cover',
+        border: '2 solid black'
+    }
+});
 
-})
-
-const ArticleCard = () => {
+const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, id }) => {
     const classes = useStyles();
+    const img = displayImage ? displayImage.replace('http://localhost:5000/', '') : ''
+    const history = useHistory();
+    const redirect = () => {
+        history.push(`/article/${id}`);
+    }
 
     return (
-        <Card className={classes.root} elevation={0} >
-            <Box display='flex' flexDirection='row' alignItems="center" p={2}>
+        <Card elevation={0} className={classes.root} onClick={redirect}>
+            <Box display='flex' flexDirection='row' alignItems="center" p={2} >
+                <CardContent className={classes.cardContent}>
+                    {
+                        isLoading ? (
+                            <React.Fragment>
+                                <Skeleton width='40%' />
+                                <Skeleton />
+                                <Skeleton />
+                                <Skeleton />
+                                <Skeleton width='40%' />
+                            </React.Fragment>
 
-                <CardContent>
-                    <Typography className={classes.user} color="textSecondary" gutterBottom>
-                        User-A
-                </Typography>
-                    <Typography variant="h5" component="h2">
-                        This is the Article Heading
-                </Typography>
-                    <Typography className={classes.subTitle} color="textSecondary">
-                        Article brif sub title
-                </Typography>
-                    <Typography className={classes.time} color="textSecondary">
-                        well meaning and kindly.
-                </Typography>
+                        ) : (
+                            <React.Fragment>
+                                <Typography className={classes.user} color="textSecondary" gutterBottom>
+                                    {author}
+                                </Typography>
+                                <Typography variant="h5" component="b">
+                                    {title}
+                                </Typography>
+                                <Typography className={classes.subTitle} color="textSecondary">
+                                    {subTitle}
+                                </Typography>
+                                <Typography className={classes.time} color="textSecondary">
+                                    {time}
+                                </Typography>
+                            </React.Fragment>
+                        )
+                    }
                 </CardContent>
-
-                <div className={classes.cardMedia} />
-                <CardMedia
-                    className={classes.cardMedia}
-                    image={img}
-                    component='img'
-                />
+                <div className={classes.grow} />
+                {
+                    isLoading ? (
+                        <Skeleton variant='rect' width={200} height={100} />
+                    ) : (
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image={displayImage}
+                            title='Display Image'
+                        />
+                    )
+                }
             </Box>
         </Card>
 

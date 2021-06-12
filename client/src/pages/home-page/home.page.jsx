@@ -5,8 +5,10 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
-
+import { useRecoilValue } from 'recoil';
+import { getArticles } from '../../global/global.state';
 import ArticleList from '../../components/article-list/article-list.component';
+
 
 const useStyle = makeStyles((theme) => ({
     foot: {
@@ -22,12 +24,13 @@ const useStyle = makeStyles((theme) => ({
 
 const HomePage = () => {
     const classes = useStyle();
-
+    let result = useRecoilValue(getArticles);
+    const data = result.data.result;
     return (
         <Container maxWidth='md'>
             <Grid container>
-                <Grid item xs={12 }sm={8} md={8} >
-                    <ArticleList />
+                <Grid item xs={12} sm={8} md={8} >
+                    <ArticleList data={data} />
                 </Grid>
                 <Grid item md={4} className={classes.foot}>
                     <Typography className={classes.footLink} color='textSecondary'>

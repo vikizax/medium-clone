@@ -1,17 +1,24 @@
-import React from 'react';
-import ArticleCard from '../article-card/article-card.component';
-import Box from '@material-ui/core/Box';
-import Container from '@material-ui/core/Container';
+import React, { useEffect } from 'react';
 
-const ArticleList = () => {
+import ArticleCard from '../article-card/article-card.component';
+
+
+const ArticleList = ({ data }) => {
     return (
         <React.Fragment>
-            <ArticleCard />
-            <ArticleCard />
-            <ArticleCard />
-            <ArticleCard />
-            <ArticleCard />
-            <ArticleCard />
+            {
+                data ?
+                    data.map(article => (
+                        <ArticleCard
+                            author={article.author.firstName + " " + article.author.lastName}
+                            title={article.title}
+                            displayImage={article.displayImage}
+                            time={article.time}
+                            key={article._id}
+                            id={article._id}
+                        />
+                    )) : ''
+            }
         </React.Fragment>
     )
 };

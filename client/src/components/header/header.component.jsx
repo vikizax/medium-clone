@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useLocation, useHistory, Redirect } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
@@ -64,42 +64,49 @@ const Header = ({ isLoading }) => {
 
     const handleClose = () => setAnchorEl(null);
 
-    const publish = () => {
+    const publish = async () => {
+        try {
+            const { blocks, time } = editorContent;
 
-        const { blocks, time } = editorContent;
+            if (blocks.length == 0)
+                return window.alert('Empty Article');
 
-        if (blocks.length == 0)
-            return window.alert('Empty Article');
+            if (blocks.length > 0 && blocks[0].type !== 'header')
+                return window.alert('Article must start with a Heading.');
 
-        if (blocks.length > 0 && blocks[0].type !== 'header')
-            return window.alert('Article must start with a Heading.');
-
-        let displayImage;
-        for (let i = 0; i < blocks.length; i++) {
-            if (blocks[i].type === 'image') {
-                if (Boolean(blocks[i].data.file.url)) {
-                    displayImage = blocks[i].data.file.url;
-                    break;
-                } else {
-                    window.alert('Article must not contain empy image space.')
-                    return;
+            let displayImage;
+            for (let i = 0; i < blocks.length; i++) {
+                if (blocks[i].type === 'image') {
+                    if (Boolean(blocks[i].data.file.url)) {
+                        displayImage = blocks[i].data.file.url;
+                        break;
+                    } else {
+                        window.alert('Article must not contain empy image space.')
+                        return;
+                    }
                 }
             }
+            let subTitle;
+            for (let i = 0; i < blocks.length; i++) {
+                if (blocks[i].type === 'paragraph') {
+                    subTitle = blocks[i].data.text;
+                }
+            }
+
+            const title = blocks[0].data.text;
+
+            await axios.post(
+                api.article,
+                { time, title, subTitle, displayImage, blocks, author: userState._id },
+                { withCredentials: true });
+
+            history.push('/');
+                
+            setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' });
+
+        } catch (err) {
+            console.error(err.response);
         }
-
-        const title = blocks[0].data.text;
-
-        axios.post(
-            api.article,
-            { time, title, displayImage, blocks, author: userState._id },
-            { withCredentials: true })
-            .then(res => {
-                setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' })
-                history.push('/')
-            })
-            .catch(err => console.error(err.response))
-
-
     }
 
     const getStartedBtn = (

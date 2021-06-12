@@ -22,12 +22,11 @@ const useStyle = makeStyles((theme) => (
 
 const CreateArticlePage = () => {
     const classes = useStyle();
-    const publish = async () => { }
     const setEditoContent = useSetRecoilState(editorAtom);
     const [content, setContent] = useState('');
 
     useEffect(() => {
-        const newContent = JSON.parse(JSON.stringify(content))
+        const newContent = JSON.parse(JSON.stringify(content));
         setEditoContent(newContent);
     }, [content])
 
@@ -40,7 +39,7 @@ const CreateArticlePage = () => {
                 onChange={(_, data) => setContent(data)}
             />
         </Box>
-    )
+    );
 }
 
 export default CreateArticlePage;
