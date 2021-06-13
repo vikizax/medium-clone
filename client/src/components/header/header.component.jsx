@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import axios from 'axios';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Avatar from '@material-ui/core/Avatar';
 import { editorAtom, modalAtom, userAtom, alertAtom } from '../../global/global.state';
 import api from '../../constant/api.constant';
 
@@ -25,17 +25,6 @@ const useStyles = makeStyles((theme) => ({
     button: {
         borderRadius: 20,
         marginLeft: 10
-    },
-    menu: {
-        display: 'none',
-        [theme.breakpoints.down('xs')]: {
-            display: 'block',
-        }
-    },
-    hideNavBtn: {
-        [theme.breakpoints.down('xs')]: {
-            display: 'none',
-        }
     },
     title: {
         '&:visited': {
@@ -55,6 +44,16 @@ const Header = ({ isLoading }) => {
     const [anchorEl, setAnchorEl] = useState()
     const location = useLocation();
     const history = useHistory();
+
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth > 599.95) setAnchorEl(null)
+        }
+
+        window.addEventListener('resize', handleResize)
+        return () => window.removeEventListener('resize', handleResize)
+    }, [])
+
 
     const signOut = async () => {
         await axios.get(api.signout, { withCredentials: true });
@@ -148,58 +147,23 @@ const Header = ({ isLoading }) => {
                     </Button>
                 ) : ''
             }
-            <div className={classes.hideNavBtn}>
-                {
-                    location.pathname != '/create' ?
-                        (
-                            <Button
-                                size='small'
-                                disableElevation
-                                variant='outlined'
-                                color='inherit'
-                                className={classes.button}
-                                component={Link} to='/create'
-                            >
-                                <Typography className={classes.buttonText}>
-                                    Create Article
-                                </Typography>
-                            </Button>) : ''
-                }
 
-                <Button
-                    size='small'
-                    disableElevation
-                    variant='outlined'
-                    color='inherit'
-                    className={classes.button}
-                    onClick={() => signOut()}
-                >
-                    <Typography className={classes.buttonText}>
-                        Sign Out
-                    </Typography>
-                </Button>
-            </div>
-
-
-        </React.Fragment>
-    );
-
-    const menuBtn = (
-        <div className={classes.menu}>
             <IconButton
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <MoreVertIcon />
+                <Avatar>{userState ? userState.firstName[0] : 'U'}</Avatar>
             </IconButton>
 
             <Menu
                 id="simple-menu"
                 anchorEl={anchorEl}
-                keepMounted
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                getContentAnchorEl={null}
+                anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                transformOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 {
                     location.pathname != '/create' ? (
@@ -208,19 +172,33 @@ const Header = ({ isLoading }) => {
                             component={Link}
                             to='/create'
                             onClick={handleClose}>
-                            CREATE ARTICLE
+                            <Typography variant='body2'>
+                                Write a story
+                            </Typography>
+
                         </MenuItem>
                     ) : ''
                 }
+                <MenuItem
+                    className={classes.buttonText}
+                    // onClick={}
+                    >
+                    <Typography variant='body2'>
+                        Stories
+                    </Typography>
+                </MenuItem>
 
                 <MenuItem
                     className={classes.buttonText}
                     onClick={handleSignOut}>
-                    SIGN OUT
+                    <Typography variant='body2'>
+                        Sign out
+                    </Typography>
                 </MenuItem>
             </Menu>
-        </div>
-    )
+
+        </React.Fragment>
+    );
 
     const authSection = (
         <React.Fragment>
@@ -228,7 +206,6 @@ const Header = ({ isLoading }) => {
                 userState ? (
                     <React.Fragment>
                         {loggedInBtns}
-                        {menuBtn}
                     </React.Fragment>
                 ) : getStartedBtn
             }

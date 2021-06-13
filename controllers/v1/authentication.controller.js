@@ -96,8 +96,6 @@ export const isLoggedIn = async (req, res, next) => {
 
             if (!currentUser) return res.end();
 
-            console.log(currentUser);
-
             return res.status(200).json(currentUser);
 
         } catch (error) {

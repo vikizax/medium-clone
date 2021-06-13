@@ -10,6 +10,7 @@ import HomePage from './pages/home-page/home.page';
 import ArticlePage from './pages/article-page/article.page';
 import SignInSignUpModal from './components/sign-in-sign-up-modal/sign-in-sign-up-modal.component'
 import ArticleListLoading from './components/article-list/article-list-loading.component';
+import MyArticlesPage from './pages/my-articles/my-articles.page';
 import { modalAtom, userAtom, alertAtom } from './global/global.state';
 import api from './constant/api.constant';
 
@@ -51,11 +52,8 @@ const App = () => {
             (<Redirect to='/' />) :
             (<CreateArticlePage />)} />
         <Route path='/article/:id' component={ArticlePage} />
+        <Route exact to='/stories' component={MyArticlesPage} />
       </Switch>
-
-      {
-        modalView.view ? <SignInSignUpModal /> : ''
-      }
 
       <SnackBar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
@@ -69,6 +67,10 @@ const App = () => {
           {alertContent.message}
         </Alert>
       </SnackBar>
+
+      {
+        modalView.view ? <SignInSignUpModal /> : ''
+      }
 
     </div>
   );
