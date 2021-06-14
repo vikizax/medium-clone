@@ -52,7 +52,11 @@ const App = () => {
             (<Redirect to='/' />) :
             (<CreateArticlePage />)} />
         <Route path='/article/:id' component={ArticlePage} />
-        <Route exact to='/stories' component={MyArticlesPage} />
+        <Route exact path='/stories' render={() => (
+          <React.Suspense fallback={<ArticleListLoading />}>
+            <MyArticlesPage />
+          </React.Suspense>
+        )} />
       </Switch>
 
       <SnackBar

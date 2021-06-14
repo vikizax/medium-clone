@@ -9,7 +9,7 @@ export const articleLoading = atom({
 
 export const getArticles = selector({
     key: 'articles',
-    get: async ({}) => {
+    get: async () => {
         try {
             const response = await axios.get(api.article);
             return response;
@@ -19,6 +19,17 @@ export const getArticles = selector({
     }
 });
 
+export const getUserArticles = selector({
+    key: 'userArticles',
+    get: async () => {
+        try {
+            const response = await axios.get(api.stories, { withCredentials: true });
+            return response;
+        } catch (err) {
+            return err.response;
+        }
+    }
+});
 
 export const modalAtom = atom({
     key: 'modal',

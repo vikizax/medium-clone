@@ -4,6 +4,7 @@ import {
     getAll,
     deleteAll,
     get,
+    getMy,
     update,
     deleteOne,
     uploadImage,
@@ -21,6 +22,11 @@ router
 
 // logged in user action  
 router.use(protect);
+
+router
+    .route('/stories')
+    .get(getMy);
+
 router
     .route('/')
     .post(create)

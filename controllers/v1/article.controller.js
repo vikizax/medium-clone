@@ -11,6 +11,9 @@ export const getAll = factory.getAll(ArticleModel, 'author');
 // get a article
 export const get = factory.getOne(ArticleModel, 'author');
 
+// get all the user's articles
+export const getMy = factory.getMy(ArticleModel, 'author');
+
 // create a article
 export const create = factory.createOne(ArticleModel);
 

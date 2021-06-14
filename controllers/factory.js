@@ -1,7 +1,6 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import MSG from '../constant/message.constant.js';
-import ArticleModel from '../models/v1/article.model.js';
 
 export default {
     createOne: Model => {
@@ -31,6 +30,26 @@ export default {
                     message: MSG.DOCUMENT_FOUND,
                     result: doc
                 });
+            }
+        )
+    },
+
+    getMy: (Model, popOptions) => {
+        return catchAsync(
+            async (req, res, next) => {
+                let query = Model.find({ author: req.user.id });
+
+                if(popOptions) query = query.populate(popOptions);
+
+                const docs = await query;
+
+                if(docs) return next(new AppError(MSG.NO_DOCUMENT, 404));
+
+                res.status(200).json({
+                    message: MSG.DOUCMENTS_FOUND,
+                    result: docs
+                });
+
             }
         )
     },

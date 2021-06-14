@@ -24,7 +24,7 @@ const useStyle = makeStyles((theme) => ({
 
 const HomePage = () => {
     const classes = useStyle();
-    let result = useRecoilValue(getArticles);
+    const result = useRecoilValue(getArticles);
     const data = result.data.result;
     return (
         <Container maxWidth='md'>

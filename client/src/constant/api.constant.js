@@ -5,5 +5,6 @@ export default {
     'currentUser': 'http://localhost:5000/api/v1/user/current',
     'uploadFile': 'http://localhost:5000/api/v1/article/uploadfile',
     'image': 'http://localhost:5000/uploads/',
-    'article': 'http://localhost:5000/api/v1/article'
+    'article': 'http://localhost:5000/api/v1/article',
+    'stories': 'http://localhost:5000/api/v1/article/stories'
 }
