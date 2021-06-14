@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import ArticleCard from '../article-card/article-card.component';
 

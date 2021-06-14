@@ -2,8 +2,6 @@ import ArticleModel from '../../models/v1/article.model.js';
 import multer from 'multer';
 import factory from '../factory.js';
 import AppError from '../../utils/AppError.js';
-import catchAsync from '../../utils/catchAsync.js';
-
 
 // get all articles
 export const getAll = factory.getAll(ArticleModel, 'author');
@@ -12,7 +10,7 @@ export const getAll = factory.getAll(ArticleModel, 'author');
 export const get = factory.getOne(ArticleModel, 'author');
 
 // get all the user's articles
-export const getMy = factory.getMy(ArticleModel, 'author');
+export const getMy = factory.getMy(ArticleModel);
 
 // create a article
 export const create = factory.createOne(ArticleModel);

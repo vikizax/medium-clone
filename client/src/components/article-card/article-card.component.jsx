@@ -6,7 +6,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import moment from 'moment';
 
 const useStyles = makeStyles({
@@ -39,6 +39,7 @@ const useStyles = makeStyles({
 const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, id }) => {
     const classes = useStyles();
     const history = useHistory();
+    const location = useLocation();
     const redirect = () => {
         history.push(`/article/${id}`);
     }
@@ -58,9 +59,10 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
 
                         ) : (
                             <React.Fragment>
-                                <Typography className={classes.user} color="textSecondary" gutterBottom>
-                                    {author}
-                                </Typography>
+                                {location.pathname !== '/stories' ?
+                                    (<Typography className={classes.user} color="textSecondary" gutterBottom>
+                                        {author}
+                                    </Typography>) : ''}
                                 <Typography variant="h5" component="b">
                                     {title}
                                 </Typography>

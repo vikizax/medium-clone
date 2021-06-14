@@ -1,6 +1,8 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import MSG from '../constant/message.constant.js';
+// import objectid from 'mongoose/lib/types/objectid.js';
+import mongoose from 'mongoose';
 
 export default {
     createOne: Model => {
@@ -34,16 +36,15 @@ export default {
         )
     },
 
-    getMy: (Model, popOptions) => {
+    getMy: (Model) => {
         return catchAsync(
             async (req, res, next) => {
-                let query = Model.find({ author: req.user.id });
 
-                if(popOptions) query = query.populate(popOptions);
+                let query = Model.find({ author: req.user.id });
 
                 const docs = await query;
 
-                if(docs) return next(new AppError(MSG.NO_DOCUMENT, 404));
+                if (!docs) return next(new AppError(MSG.NO_DOCUMENT, 404));
 
                 res.status(200).json({
                     message: MSG.DOUCMENTS_FOUND,

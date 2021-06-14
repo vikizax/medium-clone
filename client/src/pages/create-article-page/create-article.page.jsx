@@ -6,12 +6,12 @@ import { EDITOR_JS_TOOLS } from './editor.config';
 import { editorAtom } from '../../global/global.state';
 
 const CreateArticlePage = () => {
-    const setEditoContent = useSetRecoilState(editorAtom);
+    const setEditorContent = useSetRecoilState(editorAtom);
     const [content, setContent] = useState('');
 
     useEffect(() => {
         const newContent = JSON.parse(JSON.stringify(content));
-        setEditoContent(newContent);
+        setEditorContent(newContent);
     }, [content])
 
     return (

@@ -29,7 +29,7 @@ const ArticleSchema = new mongoose.Schema(
         },
 
         author: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'User',
             required: [true, 'Author is missing']
         }

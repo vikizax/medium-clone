@@ -15,6 +15,11 @@ import protect from '../../middleware/protect.middleware.js';
 
 const router = Router();
 
+// get user's created article
+router
+    .route('/stories')
+    .get(protect, getMy);
+
 // open to all
 router
     .get('/', getAll)
@@ -22,10 +27,6 @@ router
 
 // logged in user action  
 router.use(protect);
-
-router
-    .route('/stories')
-    .get(getMy);
 
 router
     .route('/')

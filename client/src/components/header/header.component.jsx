@@ -73,7 +73,7 @@ const Header = ({ isLoading }) => {
         try {
             const { blocks, time } = editorContent;
 
-            if (blocks.length == 0)
+            if (blocks.length === 0)
                 return window.alert('Empty Article');
 
             if (blocks.length > 0 && blocks[0].type !== 'header')
@@ -132,7 +132,7 @@ const Header = ({ isLoading }) => {
     const loggedInBtns = (
         <React.Fragment>
             {
-                location.pathname == '/create' ? (
+                location.pathname === '/create' ? (
                     <Button
                         size='small'
                         disableElevation
@@ -166,7 +166,7 @@ const Header = ({ isLoading }) => {
                 transformOrigin={{ vertical: "top", horizontal: "center" }}
             >
                 {
-                    location.pathname != '/create' ? (
+                    location.pathname !== '/create' ? (
                         <MenuItem
                             className={classes.buttonText}
                             component={Link}
@@ -181,7 +181,9 @@ const Header = ({ isLoading }) => {
                 }
                 <MenuItem
                     className={classes.buttonText}
-                    // onClick={}
+                    component={Link}
+                    to='/stories'
+                    onClick={handleClose}
                     >
                     <Typography variant='body2'>
                         Stories
