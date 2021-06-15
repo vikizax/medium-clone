@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSetRecoilState } from 'recoil';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { useHistory, useLocation } from 'react-router-dom';
 import moment from 'moment';
+import { articleFetchIDAtom } from '../../global/global.state';
 
 const useStyles = makeStyles({
     root: {
@@ -40,9 +42,19 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
     const classes = useStyles();
     const history = useHistory();
     const location = useLocation();
+    const setArticleFetchID = useSetRecoilState(articleFetchIDAtom);
+
     const redirect = () => {
-        history.push(`/article/${id}`);
+        setArticleFetchID(id);
+
+        if (location.pathname === '/stories') {
+            history.push(`/edit/${id}`);
+        }
+        else {
+            history.push(`/article/${id}`);
+        }
     }
+
     return (
         <Card elevation={0} className={classes.root} onClick={redirect}>
             <Box display='flex' flexDirection='row' alignItems="center" p={2} >

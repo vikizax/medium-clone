@@ -10,7 +10,7 @@ import HomePage from './pages/home-page/home.page';
 import ArticlePage from './pages/article-page/article.page';
 import SignInSignUpModal from './components/sign-in-sign-up-modal/sign-in-sign-up-modal.component'
 import ArticleListLoading from './components/article-list/article-list-loading.component';
-import MyArticlesPage from './pages/my-articles/my-articles.page';
+import MyArticlesPage from './pages/my-articles-page/my-articles.page';
 import { modalAtom, userAtom, alertAtom } from './global/global.state';
 import api from './constant/api.constant';
 
@@ -51,7 +51,13 @@ const App = () => {
           render={() => !currentUser ?
             (<Redirect to='/' />) :
             (<CreateArticlePage />)} />
-        <Route path='/article/:id' component={ArticlePage} />
+        <Route path='/article/:id'
+          render={() => (
+            <React.Suspense fallback={<ArticleListLoading />}>
+              <ArticlePage />
+            </React.Suspense>
+          )}
+        />
         <Route exact path='/stories' render={() => (
           <React.Suspense fallback={<ArticleListLoading />}>
             <MyArticlesPage />

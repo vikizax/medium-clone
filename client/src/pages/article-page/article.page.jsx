@@ -1,21 +1,14 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom'
+import React from 'react';
+import { useRecoilValue } from 'recoil';
 import Box from '@material-ui/core/Box';
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
-import api from '../../constant/api.constant';
+import { getArticle } from '../../global/global.state';
 
 const ArticlePage = () => {
-    const [content, setContent] = useState(null);
-    const params = useParams();
 
-    useEffect(() => {
-        (async () => {
-            const response = await axios.get(api.article + `/${params.id}`)
-            setContent(response.data.result)
-        })()
-    }, [])
+    const response = useRecoilValue(getArticle);
+    const content = response.data.result;
 
     return (
         <Box p={4}>
@@ -27,7 +20,7 @@ const ArticlePage = () => {
                         data={content}
                         readOnly={true}
                     />
-                ) : ''
+                ) : 'EMPTY'
             }
         </Box>
     )

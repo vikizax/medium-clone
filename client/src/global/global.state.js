@@ -7,30 +7,6 @@ export const articleLoading = atom({
     default: false
 });
 
-export const getArticles = selector({
-    key: 'articles',
-    get: async () => {
-        try {
-            const response = await axios.get(api.article);
-            return response;
-        } catch (err) {
-            return err.response;
-        }
-    }
-});
-
-export const getUserArticles = selector({
-    key: 'userArticles',
-    get: async () => {
-        try {
-            const response = await axios.get(api.stories, { withCredentials: true });
-            return response;
-        } catch (err) {
-            return err.response;
-        }
-    }
-});
-
 export const modalAtom = atom({
     key: 'modal',
     default: {
@@ -57,3 +33,46 @@ export const alertAtom = atom({
         severity: 'success'
     }
 });
+
+export const getArticles = selector({
+    key: 'articles',
+    get: async () => {
+        try {
+            const response = await axios.get(api.article);
+            return response;
+        } catch (err) {
+            return err.response;
+        }
+    }
+});
+
+export const getUserArticles = selector({
+    key: 'userArticles',
+    get: async () => {
+        try {
+            const response = await axios.get(api.stories, { withCredentials: true });
+            return response;
+        } catch (err) {
+            return err.response;
+        }
+    }
+});
+
+export const articleFetchIDAtom = atom({
+    key: 'articleFetchID',
+    default: null
+});
+
+export const getArticle = selector({
+    key: 'fetchedArticle',
+    get: async ({ get }) => {
+        try {
+            const id = get(articleFetchIDAtom);
+            const response = await axios.get(api.article + `/${id}`);
+            return response;
+        } catch (err) {
+            return err.response;
+        }
+
+    }
+})
