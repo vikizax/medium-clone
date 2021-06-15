@@ -27,7 +27,7 @@ const HomePage = () => {
     return (
         <Container maxWidth='md'>
             <Grid container>
-                <Grid item xs={12} sm={8} md={8} >
+                <Grid item xs={12} md={8} >
                     <ArticleList data={data} />
                 </Grid>
                 <Grid item md={4} className={classes.foot}>

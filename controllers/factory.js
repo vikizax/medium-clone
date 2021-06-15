@@ -108,7 +108,7 @@ export default {
         return catchAsync(
             async (req, res, next) => {
                 const doc = await Model.findOneAndUpdate(
-                    { _id: req.params.id, author: req.body.author },
+                    { _id: req.params.id, author: req.user.id },
                     req.body,
                     {
                         new: true,

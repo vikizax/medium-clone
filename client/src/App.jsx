@@ -11,6 +11,7 @@ import ArticlePage from './pages/article-page/article.page';
 import SignInSignUpModal from './components/sign-in-sign-up-modal/sign-in-sign-up-modal.component'
 import ArticleListLoading from './components/article-list/article-list-loading.component';
 import MyArticlesPage from './pages/my-articles-page/my-articles.page';
+import EditArticlePage from './pages/edit-article-page/edit-article.page';
 import { modalAtom, userAtom, alertAtom } from './global/global.state';
 import api from './constant/api.constant';
 
@@ -55,6 +56,13 @@ const App = () => {
           render={() => (
             <React.Suspense fallback={<ArticleListLoading />}>
               <ArticlePage />
+            </React.Suspense>
+          )}
+        />
+        <Route path='/edit/:id'
+          render={() => (
+            <React.Suspense fallback={<ArticleListLoading />}>
+              <EditArticlePage />
             </React.Suspense>
           )}
         />

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import EditorJs from 'react-editor-js';
 import Box from '@material-ui/core/Box';
-import { EDITOR_JS_TOOLS } from './editor.config';
+import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
 import { editorAtom, getArticle } from '../../global/global.state';
 
 const EditArticlePage = () => {

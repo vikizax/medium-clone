@@ -12,7 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import { editorAtom, modalAtom, userAtom, alertAtom } from '../../global/global.state';
+import { editorAtom, modalAtom, userAtom, alertAtom, articleFetchIDAtom } from '../../global/global.state';
 import api from '../../constant/api.constant';
 
 const useStyles = makeStyles((theme) => ({
@@ -44,6 +44,7 @@ const Header = ({ isLoading }) => {
     const [anchorEl, setAnchorEl] = useState()
     const location = useLocation();
     const history = useHistory();
+    const articleToUpdate = useRecoilValue(articleFetchIDAtom);
 
     useEffect(() => {
         function handleResize() {
@@ -69,7 +70,7 @@ const Header = ({ isLoading }) => {
 
     const handleClose = () => setAnchorEl(null);
 
-    const publish = async () => {
+    const publish = async (update) => {
         try {
             const { blocks, time } = editorContent;
 
@@ -100,14 +101,25 @@ const Header = ({ isLoading }) => {
 
             const title = blocks[0].data.text;
 
-            await axios.post(
-                api.article,
-                { time, title, subTitle, displayImage, blocks, author: userState._id },
-                { withCredentials: true });
+            if (!update) {
+                await axios.post(
+                    api.article,
+                    { time, title, subTitle, displayImage, blocks, author: userState._id },
+                    { withCredentials: true });
 
-            history.push('/');
+                history.push('/');
 
-            setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' });
+                setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' });
+            } else {
+                await axios.patch(
+                    api.article + '/' + articleToUpdate,
+                    { time, title, subTitle, displayImage, blocks, author: userState._id },
+                    { withCredentials: true });
+
+                history.push('/stories');
+
+                setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' })
+            }
 
         } catch (err) {
             console.error(err.response);
@@ -132,17 +144,17 @@ const Header = ({ isLoading }) => {
     const loggedInBtns = (
         <React.Fragment>
             {
-                location.pathname === '/create' ? (
+                location.pathname === '/create' || location.pathname.includes('/edit') ? (
                     <Button
                         size='small'
                         disableElevation
                         variant='outlined'
                         color='inherit'
                         className={classes.button}
-                        onClick={() => publish()}
+                        onClick={() => publish(location.pathname.includes('/edit'))}
                     >
                         <Typography className={classes.buttonText}>
-                            Publish
+                            {location.pathname.includes('/edit') ? 'Update' : 'Publish'}
                         </Typography>
                     </Button>
                 ) : ''
@@ -184,7 +196,7 @@ const Header = ({ isLoading }) => {
                     component={Link}
                     to='/stories'
                     onClick={handleClose}
-                    >
+                >
                     <Typography variant='body2'>
                         Stories
                     </Typography>

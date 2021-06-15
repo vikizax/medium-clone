@@ -20,6 +20,8 @@ router
     .route('/stories')
     .get(protect, getMy);
 
+
+
 // open to all
 router
     .get('/', getAll)
@@ -31,8 +33,11 @@ router.use(protect);
 router
     .route('/')
     .post(create)
-    .patch(update)
-    .delete(deleteOne)
+
+// update user's article    
+router
+    .route('/:id')
+    .patch(update);
 
 router
     .route('/uploadfile')
