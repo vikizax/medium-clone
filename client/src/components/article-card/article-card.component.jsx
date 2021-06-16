@@ -92,13 +92,13 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                 {
                     isLoading ? (
                         <Skeleton variant='rect' width={200} height={100} />
-                    ) : (
+                    ) : displayImage ? (
                         <CardMedia
                             className={classes.cardMedia}
                             image={displayImage}
                             title='Display Image'
                         />
-                    )
+                    ) : ''
                 }
             </Box>
         </Card>

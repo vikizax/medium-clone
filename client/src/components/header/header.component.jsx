@@ -83,50 +83,66 @@ const Header = ({ isLoading }) => {
     const handleClose = () => setAnchorEl(null);
 
     const publish = async (update) => {
-        try {
-            const { blocks, time } = editorContent;
-            if (blocks.length === 0)
-                return window.alert('Empty Article');
 
-            if (blocks.length > 0 && blocks[0].type !== 'header')
-                return window.alert('Article must start with a Heading.');
+        const { blocks, time } = editorContent;
+        if (blocks.length === 0)
+            return setAlert({
+                hidden: false,
+                message: 'Empty Article.',
+                severity: 'warning'
+            });
 
-            let displayImage;
-            for (let i = 0; i < blocks.length; i++) {
-                if (blocks[i].type === 'image') {
-                    if (Boolean(blocks[i].data.file.url)) {
-                        displayImage = blocks[i].data.file.url;
-                        break;
-                    } else {
-                        window.alert('Article must not contain empy image space.')
-                        return;
-                    }
+        if (blocks.length > 0 && blocks[0].type !== 'header')
+            return setAlert({
+                hidden: false,
+                message: 'Article must start with a Heading.',
+                severity: 'warning'
+            });
+
+        let displayImage;
+        for (let i = 0; i < blocks.length; i++) {
+            if (blocks[i].type === 'image') {
+                if (Boolean(blocks[i].data.file.url)) {
+                    displayImage = blocks[i].data.file.url;
+                    break;
+                } else {
+                    setAlert({
+                        hidden: false,
+                        message: 'Article must not contain empty image space.',
+                        severity: 'warning'
+                    });
+                    return;
                 }
             }
-            let subTitle;
-            for (let i = 0; i < blocks.length; i++) {
-                if (blocks[i].type === 'paragraph') {
-                    subTitle = blocks[i].data.text;
-                }
-            }
-
-            const title = blocks[0].data.text;
-
-            await mutateAsync(
-                {
-                    time,
-                    title,
-                    subTitle,
-                    displayImage,
-                    blocks,
-                    author: userState._id,
-                    articleToUpdate: update ? articleToUpdate : null
-                },
-            );
-
-        } catch (err) {
-            console.error(err.response);
         }
+
+        if (!displayImage)
+            return setAlert({
+                hidden: false,
+                message: 'Article must have a display image.',
+                severity: 'warning'
+            });
+
+        let subTitle;
+        for (let i = 0; i < blocks.length; i++) {
+            if (blocks[i].type === 'paragraph') {
+                subTitle = blocks[i].data.text;
+            }
+        }
+
+        const title = blocks[0].data.text;
+
+        await mutateAsync(
+            {
+                time,
+                title,
+                subTitle,
+                displayImage,
+                blocks,
+                author: userState._id,
+                articleToUpdate: update ? articleToUpdate : null
+            },
+        );
     }
 
     const getStartedBtn = (
@@ -233,11 +249,12 @@ const Header = ({ isLoading }) => {
     if (isSuccess) {
         reset();
         if (location.pathname.includes('/edit')) {
-            setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' });
             history.push('/stories');
+            setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' });
+
         } else {
-            setAlert({ hidden: false, message: 'Atricle Created!', severity: 'success' });
             history.push('/');
+            setAlert({ hidden: false, message: 'Atricle Created!', severity: 'success' });
         }
     }
 

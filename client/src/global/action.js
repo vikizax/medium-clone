@@ -48,7 +48,7 @@ export const publishArticle = async (
             api.article + '/' + articleToUpdate,
             { time, title, subTitle, displayImage, blocks, author },
             { withCredentials: true });
-    }else {
+    } else {
         response = await axios.post(
             api.article,
             { time, title, subTitle, displayImage, blocks, author },

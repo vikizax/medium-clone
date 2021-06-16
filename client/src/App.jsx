@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Switch, Route, Redirect, Router } from 'react-router-dom';
-import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import axios from 'axios';
 import SnackBar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert'
@@ -22,8 +22,7 @@ const Alert = (props) => {
 const App = () => {
   const modalView = useRecoilValue(modalAtom);
   const [currentUser, setUserState] = useRecoilState(userAtom);
-  const alertContent = useRecoilValue(alertAtom);
-  const resetAlert = useResetRecoilState(alertAtom);
+  const [alertContent, setAlertContent] = useRecoilState(alertAtom);
   const [userStateLoading, setUserStateLoading] = useState(true);
 
   useEffect(() => {
@@ -35,7 +34,7 @@ const App = () => {
   }, []);
 
   const closeAlert = () => {
-    resetAlert();
+    setAlertContent(old => ({ ...old, hidden: true }));
   }
 
   return (
@@ -49,7 +48,7 @@ const App = () => {
             (<Redirect to='/' />) :
             (<CreateArticlePage />)} />
         <Route path='/article/:id' component={ArticlePage} />
-        
+
         <Route path='/edit/:id'
           render={() => (
             <React.Suspense fallback={<ArticleListLoading />}>
