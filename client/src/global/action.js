@@ -12,8 +12,7 @@ export const getArticle = async ({ queryKey }, credentials) => {
     return response.data.result;
 }
 
-export const getArticles = async ({ queryKey }, credentials) => {
-    const [_key] = queryKey;
+export const getArticles = async (_, credentials) => {
     let response;
 
     if (credentials)
@@ -29,4 +28,32 @@ export const getUserArticle = (props) => {
 
 export const getUserArticles = (props) => {
     return getArticles(props, true)
+}
+
+export const publishArticle = async (
+    {
+        time,
+        title,
+        subTitle,
+        displayImage,
+        blocks,
+        author,
+        articleToUpdate
+    }) => {
+
+    let response;
+
+    if (articleToUpdate) {
+        response = await axios.patch(
+            api.article + '/' + articleToUpdate,
+            { time, title, subTitle, displayImage, blocks, author },
+            { withCredentials: true });
+    }else {
+        response = await axios.post(
+            api.article,
+            { time, title, subTitle, displayImage, blocks, author },
+            { withCredentials: true });
+    }
+    return response.data.result;
+
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
+import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
@@ -12,8 +13,10 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
-import { editorAtom, modalAtom, userAtom, alertAtom, articleFetchIDAtom } from '../../global/global.state';
+import { editorAtom, modalAtom, userAtom, alertAtom } from '../../global/global.state';
+import { publishArticle } from '../../global/action';
 import api from '../../constant/api.constant';
+
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -44,7 +47,16 @@ const Header = ({ isLoading }) => {
     const [anchorEl, setAnchorEl] = useState()
     const location = useLocation();
     const history = useHistory();
-    const articleToUpdate = useRecoilValue(articleFetchIDAtom);
+    const queryClinet = useQueryClient();
+
+    const { mutateAsync, isSuccess, isError, error, reset } = useMutation(publishArticle, {
+        onSuccess: () => {
+            queryClinet.invalidateQueries('articleQ');
+        }
+    });
+    const articleToUpdate =
+        location.pathname.startsWith('/edit') ?
+            location.pathname.replace('/edit/', '') : null;
 
     useEffect(() => {
         function handleResize() {
@@ -73,7 +85,6 @@ const Header = ({ isLoading }) => {
     const publish = async (update) => {
         try {
             const { blocks, time } = editorContent;
-
             if (blocks.length === 0)
                 return window.alert('Empty Article');
 
@@ -101,25 +112,17 @@ const Header = ({ isLoading }) => {
 
             const title = blocks[0].data.text;
 
-            if (!update) {
-                await axios.post(
-                    api.article,
-                    { time, title, subTitle, displayImage, blocks, author: userState._id },
-                    { withCredentials: true });
-
-                history.push('/');
-
-                setAlert({ hidden: false, message: 'Atricle Create!', severity: 'success' });
-            } else {
-                await axios.patch(
-                    api.article + '/' + articleToUpdate,
-                    { time, title, subTitle, displayImage, blocks, author: userState._id },
-                    { withCredentials: true });
-
-                history.push('/stories');
-
-                setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' })
-            }
+            await mutateAsync(
+                {
+                    time,
+                    title,
+                    subTitle,
+                    displayImage,
+                    blocks,
+                    author: userState._id,
+                    articleToUpdate: update ? articleToUpdate : null
+                },
+            );
 
         } catch (err) {
             console.error(err.response);
@@ -225,6 +228,23 @@ const Header = ({ isLoading }) => {
             }
         </React.Fragment>
     );
+
+
+    if (isSuccess) {
+        reset();
+        if (location.pathname.includes('/edit')) {
+            setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' });
+            history.push('/stories');
+        } else {
+            setAlert({ hidden: false, message: 'Atricle Created!', severity: 'success' });
+            history.push('/');
+        }
+    }
+
+    if (isError) {
+        setAlert({ hidden: false, message: 'Something went wrong. Please try again.', severity: 'error' });
+        reset();
+    }
 
     return (
         <AppBar

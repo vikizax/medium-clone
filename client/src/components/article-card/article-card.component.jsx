@@ -76,7 +76,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                                         {author}
                                     </Typography>) : ''}
                                 <Typography variant="h5" component="b">
-                                    {title}
+                                    {title.replaceAll('&nbsp;', ' ')}
                                 </Typography>
                                 <Typography className={classes.subTitle} color="textSecondary">
                                     {subTitle}

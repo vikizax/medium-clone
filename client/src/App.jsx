@@ -72,7 +72,7 @@ const App = () => {
         key={'bottom' + 'left'}
         autoHideDuration={2000}
       >
-        <Alert onClose={closeAlert} severity="success">
+        <Alert onClose={closeAlert} severity={alertContent.severity}>
           {alertContent.message}
         </Alert>
       </SnackBar>
