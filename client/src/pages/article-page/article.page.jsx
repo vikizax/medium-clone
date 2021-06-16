@@ -1,29 +1,37 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useQuery } from 'react-query';
+import { withRouter } from 'react-router';
 import Box from '@material-ui/core/Box';
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
-import { getArticle } from '../../global/global.state';
+import { getArticle } from '../../global/action';
 
-const ArticlePage = () => {
+const ArticlePage = ({ match: { params: { id } } }) => {
 
-    const response = useRecoilValue(getArticle);
-    const content = response.data.result;
+    // const { data, isLoading, error } = useQuery('articleQ', getArticle)
 
     return (
         <Box p={4}>
+            {/* {
+                isLoading && (<div>Loading!</div>)
+            }
+
             {
-                content ? (
+                error && (<div>{error}</div>)
+            }
+
+            {
+                data && (
                     <EditorJs
                         tools={EDITOR_JS_TOOLS}
                         logLevel='ERROR'
-                        data={content}
+                        data={data}
                         readOnly={true}
                     />
-                ) : 'EMPTY'
-            }
+                )
+            } */}
         </Box>
     )
 }
 
-export default ArticlePage;
+export default withRouter(ArticlePage);

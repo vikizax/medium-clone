@@ -20,8 +20,6 @@ router
     .route('/stories')
     .get(protect, getMy);
 
-
-
 // open to all
 router
     .get('/', getAll)

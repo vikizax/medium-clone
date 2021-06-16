@@ -1,8 +1,6 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import MSG from '../constant/message.constant.js';
-// import objectid from 'mongoose/lib/types/objectid.js';
-import mongoose from 'mongoose';
 
 export default {
     createOne: Model => {
