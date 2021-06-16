@@ -1,37 +1,33 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { withRouter } from 'react-router';
+import { useParams } from 'react-router';
 import Box from '@material-ui/core/Box';
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
 import { getArticle } from '../../global/action';
 
-const ArticlePage = ({ match: { params: { id } } }) => {
+const ArticlePage = () => {
+    const params = useParams();
+    const { data, isLoading, error } = useQuery(['articleQ', params.id], getArticle);
 
-    // const { data, isLoading, error } = useQuery('articleQ', getArticle)
+    if (isLoading) {
+        return (<div>Loading!</div>);
+    }
+
+    if (error) {
+        return (<div>{error.response.statusText}</div>);
+    }
 
     return (
         <Box p={4}>
-            {/* {
-                isLoading && (<div>Loading!</div>)
-            }
-
-            {
-                error && (<div>{error}</div>)
-            }
-
-            {
-                data && (
-                    <EditorJs
-                        tools={EDITOR_JS_TOOLS}
-                        logLevel='ERROR'
-                        data={data}
-                        readOnly={true}
-                    />
-                )
-            } */}
+            <EditorJs
+                tools={EDITOR_JS_TOOLS}
+                logLevel='ERROR'
+                data={data}
+                readOnly={true}
+            />
         </Box>
     )
 }
 
-export default withRouter(ArticlePage);
+export default ArticlePage;

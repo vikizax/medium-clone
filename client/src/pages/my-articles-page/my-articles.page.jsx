@@ -1,18 +1,24 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useQuery } from 'react-query';
 import ArticleList from '../../components/article-list/article-list.component';
-import { getUserArticles } from '../../global/global.state';
 import Container from '@material-ui/core/Container';
+import { getUserArticles } from '../../global/action';
 
 const MyArticlesPage = () => {
-    const response = useRecoilValue(getUserArticles);
-    const data =  response.data.result;
-    
+
+    const { data, isLoading, isError, error } = useQuery('myArticleQ', getUserArticles)
+
+    if (isLoading) {
+        return (<div>Loading!</div>);
+    }
+
+    if (isError) {
+        return (<div>{error.response.statusText}</div>);
+    }
+
     return (
         <Container maxWidth='sm'>
-
             <ArticleList data={data} />
-
         </Container>
     );
 }

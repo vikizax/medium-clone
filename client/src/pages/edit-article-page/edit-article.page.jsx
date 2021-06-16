@@ -1,20 +1,31 @@
 import React, { useEffect, useState } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
+import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 import EditorJs from 'react-editor-js';
 import Box from '@material-ui/core/Box';
 import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
-import { editorAtom, getArticle } from '../../global/global.state';
+import { editorAtom } from '../../global/global.state';
+import { getUserArticle } from '../../global/action';
 
 const EditArticlePage = () => {
     const [content, setContent] = useState(null);
     const setEditorContent = useSetRecoilState(editorAtom);
-    const response = useRecoilValue(getArticle)
-    const data = response.data.result;
+    const params = useParams();
+    const { data, isLoading, error, isError } = useQuery(['articleQ', params.id], getUserArticle);
 
     useEffect(() => {
         const newContent = JSON.parse(JSON.stringify(content));
         setEditorContent(newContent);
-    }, [content])
+    }, [content]);
+
+    if (isLoading) {
+        return (<div>Loading...</div>)
+    }
+
+    if (isError) {
+        return (<div>{ }</div>)
+    }
 
     return (
         <Box p={4}>
