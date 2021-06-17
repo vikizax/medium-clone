@@ -84,7 +84,15 @@ const Header = ({ isLoading }) => {
 
     const publish = async (update) => {
 
+        if (!editorContent)
+            return setAlert({
+                hidden: false,
+                message: 'No changes made.',
+                severity: 'warning'
+            });
+
         const { blocks, time } = editorContent;
+
         if (blocks.length === 0)
             return setAlert({
                 hidden: false,
@@ -127,6 +135,7 @@ const Header = ({ isLoading }) => {
         for (let i = 0; i < blocks.length; i++) {
             if (blocks[i].type === 'paragraph') {
                 subTitle = blocks[i].data.text;
+                break;
             }
         }
 
