@@ -41,13 +41,14 @@ router
     .route('/uploadfile')
     .post(uploadImage, uploadSuccess)
 
+router
+    .route('/:id')
+    .delete(deleteOne);
+
 // logged in +admin user action
 router.use(restrict('admin'))
 router
     .route('/')
     .delete(deleteAll);
-router
-    .route('/:id')
-    .delete(deleteOne);
 
 export default router;

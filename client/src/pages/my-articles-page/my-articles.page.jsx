@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import ArticleList from '../../components/article-list/article-list.component';
 import Container from '@material-ui/core/Container';
 import { getUserArticles } from '../../global/action';
+import { Box } from '@material-ui/core';
 
 const MyArticlesPage = () => {
 
@@ -18,7 +19,9 @@ const MyArticlesPage = () => {
 
     return (
         <Container maxWidth='sm'>
-            <ArticleList data={data} />
+    
+                <ArticleList data={data} />
+
         </Container>
     );
 }

@@ -47,13 +47,28 @@ const Header = ({ isLoading }) => {
     const [anchorEl, setAnchorEl] = useState()
     const location = useLocation();
     const history = useHistory();
-    const queryClinet = useQueryClient();
+    const queryClient = useQueryClient();
 
-    const { mutateAsync, isSuccess, isError, error, reset } = useMutation(publishArticle, {
+    const { mutateAsync, reset } = useMutation(publishArticle, {
         onSuccess: () => {
-            queryClinet.invalidateQueries('articleQ');
+            
+            queryClient.invalidateQueries('articleQ');
+
+            reset();
+            if (location.pathname.includes('/edit')) {
+                history.push('/stories');
+                setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' });
+            } else {
+                history.push('/');
+                setAlert({ hidden: false, message: 'Atricle Created!', severity: 'success' });
+            }
+        },
+        onError: () => {
+            reset();
+            setAlert({ hidden: false, message: 'Something went wrong. Please try again.', severity: 'error' });
         }
     });
+
     const articleToUpdate =
         location.pathname.startsWith('/edit') ?
             location.pathname.replace('/edit/', '') : null;
@@ -111,7 +126,7 @@ const Header = ({ isLoading }) => {
         for (let i = 0; i < blocks.length; i++) {
             if (blocks[i].type === 'image') {
                 if (Boolean(blocks[i].data.file.url)) {
-                    displayImage = blocks[i].data.file.url;
+                    displayImage = blocks[i].data.file.url.replace(api.image, '');
                     break;
                 } else {
                     setAlert({
@@ -253,24 +268,6 @@ const Header = ({ isLoading }) => {
             }
         </React.Fragment>
     );
-
-
-    if (isSuccess) {
-        reset();
-        if (location.pathname.includes('/edit')) {
-            history.push('/stories');
-            setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' });
-
-        } else {
-            history.push('/');
-            setAlert({ hidden: false, message: 'Atricle Created!', severity: 'success' });
-        }
-    }
-
-    if (isError) {
-        setAlert({ hidden: false, message: 'Something went wrong. Please try again.', severity: 'error' });
-        reset();
-    }
 
     return (
         <AppBar

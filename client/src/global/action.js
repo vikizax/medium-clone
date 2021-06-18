@@ -57,3 +57,8 @@ export const publishArticle = async (
     return response.data.result;
 
 }
+
+export const deleteArticle = async (id) => {
+    const response = await axios.delete(api.article + '/' + id, { withCredentials: true });
+    return response.statusText;
+}

@@ -1,6 +1,7 @@
 import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/AppError.js';
 import MSG from '../constant/message.constant.js';
+import { unlink } from 'fs/promises';
 
 export default {
     createOne: Model => {
@@ -76,9 +77,15 @@ export default {
     deleteOne: Model => {
         return catchAsync(
             async (req, res, next) => {
-                const doc = await Model.findByIdAndDelete(req.params.id);
+
+                const doc = await Model.findOneAndDelete({
+                    _id: req.params.id,
+                    author: req.user.id
+                });
 
                 if (!doc) return next(new AppError(MSG.NO_DOCUMENT, 404));
+
+                await unlink('./uploads/' + doc.displayImage);
 
                 res.status(204).json({
                     message: MSG.DOCUMENT_DELETE,
@@ -105,6 +112,7 @@ export default {
     updateOne: Model => {
         return catchAsync(
             async (req, res, next) => {
+                console.log(req.user)
                 const doc = await Model.findOneAndUpdate(
                     { _id: req.params.id, author: req.user.id },
                     req.body,
