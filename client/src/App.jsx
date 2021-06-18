@@ -42,24 +42,23 @@ const App = () => {
       <Header isLoading={userStateLoading} />
       <Switch>
         <Route exact path='/' component={HomePage} />
+        <Route path='/article/:id' component={ArticlePage} />
         <Route
           exact path='/create'
           render={() => !currentUser ?
             (<Redirect to='/' />) :
-            (<CreateArticlePage />)} />
-        <Route path='/article/:id' component={ArticlePage} />
-
+            (<CreateArticlePage />)}
+        />
         <Route path='/edit/:id'
           render={() => (
-            <React.Suspense fallback={<ArticleListLoading />}>
-              <EditArticlePage />
-            </React.Suspense>
-          )}
+            !currentUser ?
+              (<Redirect to='/' />) :
+              (<EditArticlePage />))}
         />
         <Route exact path='/stories' render={() => (
-          <React.Suspense fallback={<ArticleListLoading />}>
-            <MyArticlesPage />
-          </React.Suspense>
+          !currentUser ?
+            (<Redirect to='/' />) :
+            (<MyArticlesPage />)
         )} />
       </Switch>
 

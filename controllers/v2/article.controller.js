@@ -1,28 +1,28 @@
 import ArticleModel from '../../models/v1/article.model.js';
 import multer from 'multer';
-import factory from './factory.js';
+import factoryV1 from '../v1/factory.js';
 import AppError from '../../utils/AppError.js';
 
 // get all articles
-export const getAll = factory.getAll(ArticleModel, 'author');
+export const getAll = factoryV1.getAll(ArticleModel, 'author');
 
 // get a article
-export const get = factory.getOne(ArticleModel, 'author');
+export const get = factoryV1.getOne(ArticleModel, 'author');
 
 // get all the user's articles
-export const getMy = factory.getMy(ArticleModel);
+export const getMy = factoryV1.getMy(ArticleModel);
 
 // create a article
-export const create = factory.createOne(ArticleModel);
+export const create = factoryV1.createOne(ArticleModel);
 
 // update a article
-export const update = factory.updateOne(ArticleModel);
+export const update = factoryV1.updateOne(ArticleModel);
 
 // delete all article
-export const deleteAll = factory.deleteAll(ArticleModel);
+export const deleteAll = factoryV1.deleteAll(ArticleModel);
 
 // deleta a article
-export const deleteOne = factory.deleteOne(ArticleModel);
+export const deleteOne = factoryV1.deleteOne(ArticleModel);
 
 // upload image
 const storage = multer.diskStorage({

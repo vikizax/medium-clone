@@ -1,5 +1,5 @@
 import UserModel from '../../models/v1/user.model.js';
-import factory from '../factory.js';
+import factory from './factory.js';
 
 export const getOne = factory.getOne(UserModel);
 
