@@ -210,7 +210,7 @@ const Header = ({ loadingUser }) => {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <Avatar>{ userState ? userState.firstName : 'U'}</Avatar>
+                <Avatar>{ userState ? userState.firstName[0] : 'U'}</Avatar>
             </IconButton>
 
             <Menu

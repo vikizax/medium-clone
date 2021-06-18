@@ -96,12 +96,21 @@ exports.isLoggedIn = async (req, res, next) => {
 
             if (!currentUser) return res.end();
 
-            return res.status(200).json(currentUser);
+            return res.status(200).json({
+                message: 'You are currently logged in!.',
+                result: currentUser
+            });
 
         } catch (error) {
-            return res.end();
+            return res.status(500).json({
+                message: 'Ops something went wrong.',
+                result: null
+            });
         }
     }
-    res.end();
+    return res.status(200).json({
+        message: 'You are currently not logged in!.',
+        result: null
+    });
 }
 

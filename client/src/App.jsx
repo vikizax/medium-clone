@@ -27,7 +27,9 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const user = await axios.get(api.currentUser, { withCredentials: true });
-      if (user) setUserState(user.data);
+      if (user.data.result) {
+        setUserState(user.data.result);
+      }
       setUserStateLoading(false);
     })()
   }, []);
