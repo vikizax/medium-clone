@@ -1,10 +1,10 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
-import UserModel from '../../models/user.model.js';
-import MSG from '../../constant/message.constant.js';
-import catchAsync from '../../utils/catchAsync.js';
-import AppError from '../../utils/AppError.js';
+import UserModel from './../../models/user.model.js';
+import MSG from './../../constant/message.constant.js';
+import catchAsync from './../../utils/catchAsync.js';
+import AppError from './../../utils/AppError.js';
 
 const signToken = (email, id, secret) => {
     return jwt.sign(

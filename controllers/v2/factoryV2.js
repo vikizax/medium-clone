@@ -1,8 +1,7 @@
-import { unlink } from 'fs/promises';
 import { v2 as cloudinary } from 'cloudinary';
-import catchAsync from '../../utils/catchAsync.js';
-import AppError from '../../utils/AppError.js';
-import MSG from '../../constant/message.constant.js';
+import catchAsync from './../../utils/catchAsync.js';
+import AppError from './../../utils/AppError.js';
+import MSG from './../../constant/message.constant.js';
 
 
 export default {

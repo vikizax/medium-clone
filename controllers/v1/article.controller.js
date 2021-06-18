@@ -1,7 +1,7 @@
-import ArticleModel from '../../models/article.model.js';
+import ArticleModel from './../../models/article.model.js';
 import multer from 'multer';
 import factory from './factory.js';
-import AppError from '../../utils/AppError.js';
+import AppError from './../../utils/AppError.js';
 
 // get all articles
 export const getAll = factory.getAll(ArticleModel, 'author');

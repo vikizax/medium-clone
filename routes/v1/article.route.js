@@ -9,9 +9,9 @@ import {
     deleteOne,
     uploadImage,
     uploadSuccess
-} from '../../controllers/v1/article.controller.js';
-import restrict from '../../middleware/restrict.middleware.js';
-import protect from '../../middleware/protect.middleware.js';
+} from './../../controllers/v1/article.controller.js';
+import restrict from './../../middleware/restrict.middleware.js';
+import protect from './../../middleware/protect.middleware.js';
 
 const router = Router();
 

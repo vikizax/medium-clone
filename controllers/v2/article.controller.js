@@ -1,8 +1,8 @@
 import { v2 as cloudinary } from 'cloudinary';
-import ArticleModel from '../../models/article.model.js'
+import ArticleModel from './../../models/article.model.js'
 import factoryV2 from './factoryV2.js';
-import catchAsync from '../../utils/catchAsync.js';
-import AppError from '../../utils/AppError.js';
+import catchAsync from './../../utils/catchAsync.js';
+import AppError from './../../utils/AppError.js';
 
 export const deleteOne = factoryV2.deleteOne(ArticleModel);
 

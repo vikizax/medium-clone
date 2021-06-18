@@ -1,6 +1,6 @@
-import catchAsync from '../../utils/catchAsync.js';
-import AppError from '../../utils/AppError.js';
-import MSG from '../../constant/message.constant.js';
+import catchAsync from './../../utils/catchAsync.js';
+import AppError from './../../utils/AppError.js';
+import MSG from './../../constant/message.constant.js';
 import { unlink } from 'fs/promises';
 
 export default {

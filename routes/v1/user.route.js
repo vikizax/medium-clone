@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { getAll, deleteOne, getOne, deleteAll } from '../../controllers/v1/user.controller.js';
-import { isLoggedIn } from '../../controllers/v1/authentication.controller.js';
-import restrict from '../../middleware/restrict.middleware.js';
-import protect from '../../middleware/protect.middleware.js';
+import { getAll, deleteOne, getOne, deleteAll } from './../../controllers/v1/user.controller.js';
+import { isLoggedIn } from './../../controllers/v1/authentication.controller.js';
+import restrict from './../../middleware/restrict.middleware.js';
+import protect from './../../middleware/protect.middleware.js';
 
 const router = Router();
 

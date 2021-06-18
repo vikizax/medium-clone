@@ -1,5 +1,5 @@
-import AppError from '../utils/AppError.js';
-import MSG from '../constant/message.constant.js';
+import AppError from './../utils/AppError.js';
+import MSG from './../constant/message.constant.js';
 
 const restrict = (...roles) => {
     return (req, res, next) => {
