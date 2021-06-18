@@ -81,7 +81,13 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
     }
 
     const cardContent = (
-        <Box display='flex' flexDirection='row' alignItems="center" p={2} width={'100%'} onClick={redirect}>
+        <Box
+            display='flex'
+            flexDirection='row'
+            alignItems="center"
+            p={2} width={'100%'}
+            onClick={() => { if (!isLoading) { redirect() } }}
+        >
             <CardContent className={classes.cardContent}>
                 {
                     isLoading ? (
@@ -133,7 +139,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                 location.pathname === '/stories' && !isLoading ?
                     (<Box display='flex' flexDirection='row' alignItems='center'>
                         {cardContent}
-                        
+
                         <IconButton onClick={async () => await mutateAsync(id)}
                             disabled={isMutating}
                         >
