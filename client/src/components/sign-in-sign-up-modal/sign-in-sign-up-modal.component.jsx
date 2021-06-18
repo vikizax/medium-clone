@@ -67,10 +67,8 @@ const SignInSignUpModal = () => {
     );
 
     return (
-        <div>
+        <Box>
             <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
                 className={classes.modal}
                 open={modal.view}
                 onClose={handleClose}
@@ -79,6 +77,7 @@ const SignInSignUpModal = () => {
                 BackdropProps={{
                     timeout: 500,
                 }}
+                disableBackdropClick={modal.loading}
             >
                 <Fade in={modal.view}>
 
@@ -92,7 +91,7 @@ const SignInSignUpModal = () => {
                     </Box>
                 </Fade>
             </Modal>
-        </div>
+        </Box>
     );
 }
 

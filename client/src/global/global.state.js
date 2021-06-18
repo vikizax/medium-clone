@@ -9,7 +9,8 @@ export const modalAtom = atom({
     key: 'modal',
     default: {
         view: false,
-        option: ''
+        option: '',
+        loading: false
     }
 });
 

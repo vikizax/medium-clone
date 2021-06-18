@@ -29,14 +29,16 @@ const SignUp = () => {
     const setUserState = useSetRecoilState(userAtom);
     const resetModalState = useResetRecoilState(modalAtom);
     const { mutateAsync, isLoading } = useMutation(signIn, {
+        onMutate: () => {
+            setModelOption(current => ({ ...current, loading: true }));
+        },
         onSuccess: (data) => {
-            console.log(data);
             setUserState(data);
             resetModalState();
 
         },
         onError: (error) => {
- 
+            setModelOption(current => ({ ...current, loading: false }));
             setEmailError(error.response.data.message)
             setPwdError(error.response.data.message)
         }

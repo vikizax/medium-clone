@@ -11,10 +11,15 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+const DB = process.env.MONGODB_URI.replace(
+    '<password>',
+    process.env.MONGODB_PWD
+  );
+
 // DATABASE
 mongoose.
     connect(
-        'mongodb://localhost:27017/mediumdb',
+        DB,
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,

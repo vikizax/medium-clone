@@ -2,15 +2,12 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import ArticleList from '../../components/article-list/article-list.component';
 import Container from '@material-ui/core/Container';
+import ArticleListLoading from '../../components/article-list/article-list-loading.component';
 import { getUserArticles } from '../../global/action';;
 
 const MyArticlesPage = () => {
 
     const { data, isLoading, isError, error } = useQuery('myArticleQ', getUserArticles)
-
-    if (isLoading) {
-        return (<div>Loading!</div>);
-    }
 
     if (isError) {
         return (<div>{error.response.statusText}</div>);
@@ -18,8 +15,10 @@ const MyArticlesPage = () => {
 
     return (
         <Container maxWidth='sm'>
-    
-                <ArticleList data={data} />
+            {
+                isLoading && (<ArticleListLoading />)
+            }
+            <ArticleList data={data} isLoading={isLoading}/>
 
         </Container>
     );

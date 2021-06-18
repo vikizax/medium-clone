@@ -38,7 +38,7 @@ const App = () => {
 
   return (
     <div>
-      <Header isLoading={userStateLoading} />
+      <Header loadingUser={userStateLoading} />
       <Switch>
         <Route exact path='/' component={HomePage} />
         <Route path='/article/:id' component={ArticlePage} />

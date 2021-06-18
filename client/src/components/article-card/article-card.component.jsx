@@ -130,7 +130,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
     return (
         <Card elevation={0} className={classes.root} >
             {
-                location.pathname === '/stories' ?
+                location.pathname === '/stories' && !isLoading ?
                     (<Box display='flex' flexDirection='row' alignItems='center'>
                         {cardContent}
                         

@@ -2,6 +2,7 @@ import React from 'react';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress'
 import EditorJs from 'react-editor-js';
 import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
 import { getArticle } from '../../global/action';
@@ -11,7 +12,7 @@ const ArticlePage = () => {
     const { data, isLoading, error } = useQuery(['articleQ', params.id], getArticle);
 
     if (isLoading) {
-        return (<div>Loading!</div>);
+        return (<LinearProgress />);
     }
 
     if (error) {

@@ -6,6 +6,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -36,7 +37,7 @@ const useStyles = makeStyles({
     }
 });
 
-const Header = ({ isLoading }) => {
+const Header = ({ loadingUser }) => {
     const classes = useStyles();
     const setModalView = useSetRecoilState(modalAtom);
     const setAlert = useSetRecoilState(alertAtom);
@@ -48,7 +49,7 @@ const Header = ({ isLoading }) => {
     const history = useHistory();
     const queryClient = useQueryClient();
 
-    const { mutateAsync, reset } = useMutation(publishArticle, {
+    const { mutateAsync, isLoading, reset } = useMutation(publishArticle, {
         onSuccess: () => {
 
             queryClient.invalidateQueries('articleQ');
@@ -187,20 +188,21 @@ const Header = ({ isLoading }) => {
     const loggedInBtns = (
         <React.Fragment>
             {
-                location.pathname === '/create' || location.pathname.includes('/edit') ? (
-                    <Button
-                        size='small'
-                        disableElevation
-                        variant='outlined'
-                        color='inherit'
-                        className={classes.button}
-                        onClick={() => publish(location.pathname.includes('/edit'))}
-                    >
-                        <Typography className={classes.buttonText}>
-                            {location.pathname.includes('/edit') ? 'Update' : 'Publish'}
-                        </Typography>
-                    </Button>
-                ) : ''
+                isLoading ? (<CircularProgress />) :
+                    location.pathname === '/create' || location.pathname.includes('/edit') ? (
+                        <Button
+                            size='small'
+                            disableElevation
+                            variant='outlined'
+                            color='inherit'
+                            className={classes.button}
+                            onClick={() => publish(location.pathname.includes('/edit'))}
+                        >
+                            <Typography className={classes.buttonText}>
+                                {location.pathname.includes('/edit') ? 'Update' : 'Publish'}
+                            </Typography>
+                        </Button>
+                    ) : ''
             }
 
             <IconButton
@@ -289,7 +291,7 @@ const Header = ({ isLoading }) => {
 
                 <div className={classes.grow} />
                 {
-                    !isLoading ? authSection : ''
+                    !loadingUser ? authSection : <CircularProgress />
                 }
             </Toolbar>
         </AppBar>

@@ -25,10 +25,11 @@ const useStyles = makeStyles({
 
 const SignUp = () => {
     const classes = useStyles();
+
     const setModelOption = useSetRecoilState(modalAtom);
     const setUserState = useSetRecoilState(userAtom);
     const resetModalState = useResetRecoilState(modalAtom);
-    
+
     const [formState, setFormState] = useState({
         firstName: '',
         lastName: '',
@@ -43,11 +44,15 @@ const SignUp = () => {
     const [confPwdError, setConfPwdError] = useState('')
 
     const { mutateAsync, isLoading } = useMutation(signUp, {
+        onMutate: () => {
+            setModelOption(current => ({ ...current, loading: true }));
+        },
         onSuccess: (data) => {
             setUserState(data);
             resetModalState();
         },
         onError: (error) => {
+            setModelOption(current => ({ ...current, loading: false }));
             if (error.response.status === 409)
                 setEmailError(error.response.data.message)
         }

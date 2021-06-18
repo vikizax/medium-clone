@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 import EditorJs from 'react-editor-js';
 import Box from '@material-ui/core/Box';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import { EDITOR_JS_TOOLS } from '../create-article-page/editor.config';
 import { editorAtom } from '../../global/global.state';
 import { getUserArticle } from '../../global/action';
@@ -20,11 +21,11 @@ const EditArticlePage = () => {
     }, [content]);
 
     if (isLoading) {
-        return (<div>Loading...</div>)
+        return (<LinearProgress />);
     }
 
     if (isError) {
-        return (<div>Something went wrong. Please reload.</div>)
+        return (<div>Something went wrong. Please reload.</div>);
     }
 
     return (
