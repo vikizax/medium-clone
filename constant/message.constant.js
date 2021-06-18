@@ -1,4 +1,4 @@
-export default {
+module.exports = {
     SIGN_UP_SUCCESS: 'Sign-up success.',
     SIGN_IN_SUCCESS: 'Sign-in success',
     SERVER_ERROR: 'Someting went wrong.',

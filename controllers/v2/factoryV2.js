@@ -1,10 +1,9 @@
-import { v2 as cloudinary } from 'cloudinary';
-import catchAsync from './../../utils/catchAsync.js';
-import AppError from './../../utils/AppError.js';
-import MSG from './../../constant/message.constant.js';
+const cloudinary = require('cloudinary').v2;
+const catchAsync = require('./../../utils/catchAsync');
+const AppError = require('./../../utils/AppError');
+const MSG = require('./../../constant/message.constant');
 
-
-export default {
+module.exports = {
     deleteOne: Model => {
         return catchAsync(
             async (req, res, next) => {

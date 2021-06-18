@@ -1,8 +1,8 @@
-import { Router } from 'express';
-import multiparty from 'connect-multiparty';
-import { uploadImage } from './../../controllers/v2/article.controller.js';
-import protect from './../../middleware/protect.middleware.js';
-import { deleteOne } from './../../controllers/v2/article.controller.js';
+const Router = require('express').Router;
+const multiparty = require('connect-multiparty');
+const uploadImage = require('../../controllers/v2/article.controller').uploadImage;
+const deleteOne = require('../../controllers/v2/article.controller').deleteOne;
+const protect = require('../../middleware/protect.middleware');
 const multipartMiddleWare = multiparty();
 
 const router = Router();
@@ -18,7 +18,6 @@ router
     .route('/uploadfile')
     .post(multipartMiddleWare, uploadImage);
 
-
-export default router;
+module.exports = router;
 
 

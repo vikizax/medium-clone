@@ -1,9 +1,11 @@
-import { Router } from 'express';
-import { getAll, deleteOne, getOne, deleteAll } from './../../controllers/v1/user.controller.js';
-import { isLoggedIn } from './../../controllers/v1/authentication.controller.js';
-import restrict from './../../middleware/restrict.middleware.js';
-import protect from './../../middleware/protect.middleware.js';
-
+const Router = require('express').Router;
+const getAll = require('../../controllers/v1/user.controller').getAll;
+const deleteOne = require('../../controllers/v1/user.controller').deleteOne;
+const getOne = require('../../controllers/v1/user.controller').getOne;
+const deleteAll = require('../../controllers/v1/user.controller').deleteAll;
+const isLoggedIn = require('../../controllers/v1/authentication.controller').isLoggedIn;
+const restrict = require('../../middleware/restrict.middleware');
+const protect = require('../../middleware/protect.middleware');
 const router = Router();
 
 // get logged in user details
@@ -25,5 +27,5 @@ router
     .route('/')
     .get(getAll)
     .delete(deleteAll);
-
-export default router;
+    
+module.exports = router;

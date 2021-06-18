@@ -1,28 +1,28 @@
-import ArticleModel from './../../models/article.model.js';
-import multer from 'multer';
-import factory from './factory.js';
-import AppError from './../../utils/AppError.js';
+const ArticleModel = require('../../models/article.model');
+const multer = require('multer');
+const factory = require('./factory');
+const AppError = require('../../utils/AppError');
 
 // get all articles
-export const getAll = factory.getAll(ArticleModel, 'author');
+exports.getAll = factory.getAll(ArticleModel, 'author');
 
 // get a article
-export const get = factory.getOne(ArticleModel, 'author');
+exports.get = factory.getOne(ArticleModel, 'author');
 
 // get all the user's articles
-export const getMy = factory.getMy(ArticleModel);
+exports.getMy = factory.getMy(ArticleModel);
 
 // create a article
-export const create = factory.createOne(ArticleModel);
+exports.create = factory.createOne(ArticleModel);
 
 // update a article
-export const update = factory.updateOne(ArticleModel);
+exports.update = factory.updateOne(ArticleModel);
 
 // delete all article
-export const deleteAll = factory.deleteAll(ArticleModel);
+exports.deleteAll = factory.deleteAll(ArticleModel);
 
 // deleta a article
-export const deleteOne = factory.deleteOne(ArticleModel);
+exports.deleteOne = factory.deleteOne(ArticleModel);
 
 // upload image
 const storage = multer.diskStorage({
@@ -43,7 +43,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage })
 
-export const uploadImage = upload.single('image');
-export const uploadSuccess = (req, res) => res
+exports.uploadImage = upload.single('image');
+exports.uploadSuccess = (req, res) => res
     .status(200)
     .json({ message: 'Image uploaded.', fileName: res.req.file.filename })

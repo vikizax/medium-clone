@@ -1,7 +1,6 @@
-import app from './app.js';
-import mongoose from 'mongoose';
-import { v2 as cloudinary } from 'cloudinary';
-
+const app = require('./app');
+const mongoose = require('mongoose');
+const cloudinary = require('cloudinary').v2;
 const port = process.env.PORT || 5000;
 
 // Cloudinary config

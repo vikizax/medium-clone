@@ -1,17 +1,15 @@
-import { Router } from 'express';
-import {
-    create,
-    getAll,
-    deleteAll,
-    get,
-    getMy,
-    update,
-    deleteOne,
-    uploadImage,
-    uploadSuccess
-} from './../../controllers/v1/article.controller.js';
-import restrict from './../../middleware/restrict.middleware.js';
-import protect from './../../middleware/protect.middleware.js';
+const Router = require('express').Router;
+const create = require('../../controllers/v1/article.controller').create;
+const getAll = require('../../controllers/v1/article.controller').getAll;
+const deleteAll = require('../../controllers/v1/article.controller').deleteAll;
+const get = require('../../controllers/v1/article.controller').get;
+const getMy = require('../../controllers/v1/article.controller').getMy;
+const update = require('../../controllers/v1/article.controller').update;
+const deleteOne = require('../../controllers/v1/article.controller').deleteOne;
+const uploadImage = require('../../controllers/v1/article.controller').uploadImage;
+const uploadSuccess = require('../../controllers/v1/article.controller').uploadSuccess;
+const restrict = require('../../middleware/restrict.middleware');
+const protect = require('../../middleware/protect.middleware');
 
 const router = Router();
 
@@ -22,10 +20,7 @@ router
 
 // open to all
 router
-    .get('/', (req, res, next) => {
-        console.log('=========================HERE+++======');
-        next();
-    }, getAll)
+    .get('/', getAll)
     .get('/:id', get)
 
 // logged in user action  
@@ -54,4 +49,4 @@ router
     .route('/')
     .delete(deleteAll);
 
-export default router;
+module.exports = router;

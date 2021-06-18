@@ -1,5 +1,5 @@
-import AppError from './../utils/AppError.js';
-import MSG from './../constant/message.constant.js';
+const AppError = require('./../utils/AppError');
+const MSG = require('./../constant/message.constant');
 
 const handleCastError = error => {
     const message = `Invalid ${error.path}: ${error.value}.`;
@@ -38,7 +38,7 @@ const sendError = (err, req, res) => {
 
 }
 
-export default (err, req, res, next) => {
+module.exports = (err, req, res, next) => {
 
 
     err.statusCode = err.statusCode || 500;

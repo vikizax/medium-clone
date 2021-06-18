@@ -1,12 +1,12 @@
-import { v2 as cloudinary } from 'cloudinary';
-import ArticleModel from './../../models/article.model.js'
-import factoryV2 from './factoryV2.js';
-import catchAsync from './../../utils/catchAsync.js';
-import AppError from './../../utils/AppError.js';
+const cloudinary = require('cloudinary').v2;
+const ArticleModel = require('../../models/article.model');
+const factoryV2 = require('./factoryV2');
+const catchAsync = require('../../utils/catchAsync');
+const AppError = require('../../utils/AppError');
 
-export const deleteOne = factoryV2.deleteOne(ArticleModel);
+exports.deleteOne = factoryV2.deleteOne(ArticleModel);
 
-export const uploadImage = catchAsync(
+exports.uploadImage = catchAsync(
     async (req, res, next) => {
         
         if (!req.files.image.type.startsWith('image')) {

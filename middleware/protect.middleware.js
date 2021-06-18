@@ -1,16 +1,16 @@
-import jwt from 'jsonwebtoken';
-import { promisify } from 'util';
-import UserModel from './../models/user.model.js';
-import MSG from './../constant/message.constant.js';
-import catchAsync from './../utils/catchAsync.js';
-import AppError from './../utils/AppError.js';
+const jwt = require('jsonwebtoken');
+const promisify = require('util').promisify;
+const UserModel = require('../models/user.model');
+const MSG = require('../constant/message.constant');
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/AppError');
 
 const protect = catchAsync(
     async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
         let jwtToken, decoded;
 
-         if (req.cookies.jwt) {
+        if (req.cookies.jwt) {
 
             jwtToken = req.cookies.jwt;
 
@@ -35,4 +35,4 @@ const protect = catchAsync(
     }
 );
 
-export default protect;
+module.exports = protect;

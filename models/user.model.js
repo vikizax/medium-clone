@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
-import isEmail from 'validator/lib/isEmail.js';
-import bcrypt from 'bcryptjs';
+const mongoose = require('mongoose');
+const isEmail = require('validator/lib/isEmail.js');
+const bcrypt = require('bcryptjs');
 
 const UserSchema = new mongoose.Schema(
     {
@@ -44,4 +44,4 @@ UserSchema.pre('save', async function (next) {
 
 const UserModel = mongoose.model('User', UserSchema);
 
-export default UserModel;
+module.exports = UserModel;

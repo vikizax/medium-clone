@@ -1,6 +1,7 @@
-import { Router } from 'express';
-import { signIn, signUp, signOut } from './../../controllers/v1/authentication.controller.js';
-
+const Router = require('express').Router;
+const signIn = require('../../controllers/v1/authentication.controller').signIn;
+const signUp = require('../../controllers/v1/authentication.controller').signUp;
+const signOut = require('../../controllers/v1/authentication.controller').signOut;
 const router = Router();
 
 router
@@ -15,4 +16,4 @@ router
     .route('/signout')
     .get(signOut)
 
-export default router;
+module.exports = router;

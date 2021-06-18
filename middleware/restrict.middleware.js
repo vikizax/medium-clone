@@ -1,5 +1,5 @@
-import AppError from './../utils/AppError.js';
-import MSG from './../constant/message.constant.js';
+const AppError = require('../utils/AppError');
+const MSG = require('../constant/message.constant');
 
 const restrict = (...roles) => {
     return (req, res, next) => {
@@ -11,4 +11,4 @@ const restrict = (...roles) => {
     }
 }
 
-export default restrict;
+module.exports = restrict;

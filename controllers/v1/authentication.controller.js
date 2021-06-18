@@ -1,10 +1,10 @@
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { promisify } from 'util';
-import UserModel from './../../models/user.model.js';
-import MSG from './../../constant/message.constant.js';
-import catchAsync from './../../utils/catchAsync.js';
-import AppError from './../../utils/AppError.js';
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const promisify = require('util').promisify;
+const UserModel = require('../../models/user.model');
+const MSG = require('../../constant/message.constant');
+const catchAsync = require('../../utils/catchAsync');
+const AppError = require('../../utils/AppError');
 
 const signToken = (email, id, secret) => {
     return jwt.sign(
@@ -30,7 +30,7 @@ const sendSignedTokenCookie = (request, response, msg, result, token) => {
         .json({ message: msg, result });
 }
 
-export const signIn = catchAsync(
+exports.signIn = catchAsync(
     async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
         const { email, password } = req.body;
@@ -53,7 +53,7 @@ export const signIn = catchAsync(
     }
 );
 
-export const signUp = catchAsync(
+exports.signUp = catchAsync(
     async (req, res, next) => {
         const secret = process.env.SERVER_SECRET;
 
@@ -73,7 +73,7 @@ export const signUp = catchAsync(
     }
 );
 
-export const signOut = (req, res) => {
+exports.signOut = (req, res) => {
     res.cookie('jwt', 'loggedout', {
         expires: new Date(Date.now() + 1 * 1000),
         httpOnly: true,
@@ -82,7 +82,7 @@ export const signOut = (req, res) => {
     res.status(200).json({ status: 'success' });
 };
 
-export const isLoggedIn = async (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
     if (req.cookies.jwt) {
         try {
             const decoded =
@@ -95,7 +95,7 @@ export const isLoggedIn = async (req, res, next) => {
             const currentUser = await UserModel.findById(decoded.id);
 
             if (!currentUser) return res.end();
-            
+
             return res.status(200).json(currentUser);
 
         } catch (error) {

@@ -1,9 +1,9 @@
-import catchAsync from './../../utils/catchAsync.js';
-import AppError from './../../utils/AppError.js';
-import MSG from './../../constant/message.constant.js';
-import { unlink } from 'fs/promises';
+const unlink = require('fs/promises').unlink;
+const catchAsync = require('../../utils/catchAsync');
+const AppError = require('../../utils/AppError');
+const MSG = require('../../constant/message.constant');
 
-export default {
+module.exports = {
     createOne: Model => {
         return catchAsync(
             async (req, res, next) => {
