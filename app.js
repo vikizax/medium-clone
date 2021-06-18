@@ -1,8 +1,6 @@
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
-
-import AppError from './utils/AppError.js';
 import globalErrorController from './controllers/globalError.controller.js';
 
 // routes
@@ -39,6 +37,8 @@ app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(cookieParser());
 // app.use('/uploads', express.static('uploads'))
+
+console.log('------------================='+articleRouter);
 
 // version 1 routes
 app.use('/api/v1/article', articleRouter);
