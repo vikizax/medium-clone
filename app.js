@@ -12,15 +12,15 @@ import authenticationRouter from './routes/v1/authentication.route.js';
 import userRouter from './routes/v1/user.route.js';
 
 // dev dep
-import morgan from 'morgan';
+// import morgan from 'morgan';
 import dotenv from 'dotenv';
 
 
 const app = express();
 
-if (process.env.NODE_ENV == 'development') {
-    app.use(morgan('dev'));
-}
+// if (process.env.NODE_ENV == 'development') {
+//     app.use(morgan('dev'));
+// }
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
