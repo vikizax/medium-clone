@@ -11,8 +11,14 @@ const ArticleSchema = new mongoose.Schema(
             type: String,
         },
         displayImage: {
-            type: String,
-            required: [true, 'Display image is missing'],
+            url: {
+                type: String,
+                required: [true, 'Display image URL is missing']
+            },
+            public_id: {
+                type: String,
+                required: [true, 'Display image Public ID is missing']
+            },
         },
         blocks:
         {

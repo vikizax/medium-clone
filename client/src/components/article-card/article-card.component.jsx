@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import CardMedia from '@material-ui/core/CardMedia';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
@@ -14,7 +15,6 @@ import { useHistory, useLocation } from 'react-router-dom';
 import moment from 'moment';
 import { deleteArticle } from '../../global/action';
 import { alertAtom } from '../../global/global.state';
-import api from '../../constant/api.constant';
 
 const useStyles = makeStyles({
     root: {
@@ -49,7 +49,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
     const location = useLocation();
     const queryClient = useQueryClient();
     const setAlert = useSetRecoilState(alertAtom);
-    const { mutateAsync, reset } = useMutation(deleteArticle, {
+    const { mutateAsync, isLoading: isMutating, reset } = useMutation(deleteArticle, {
         onSuccess: () => {
             queryClient.invalidateQueries('articleQ');
             queryClient.invalidateQueries('myArticleQ');
@@ -71,7 +71,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
     });
 
 
-    const redirect = () => { 
+    const redirect = () => {
         if (location.pathname === '/stories') {
             history.push(`/edit/${id}`);
         }
@@ -119,7 +119,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                 ) : displayImage ? (
                     <CardMedia
                         className={classes.cardMedia}
-                        image={api.image + '/' + displayImage}
+                        image={displayImage.url}
                         title='Display Image'
                     />
                 ) : ''
@@ -133,9 +133,16 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
                 location.pathname === '/stories' ?
                     (<Box display='flex' flexDirection='row' alignItems='center'>
                         {cardContent}
-                        <IconButton onClick={async () => await mutateAsync(id)}>
-                            <DeleteIcon color='error' />
+                        
+                        <IconButton onClick={async () => await mutateAsync(id)}
+                            disabled={isMutating}
+                        >
+                            {
+                                isMutating ? (<CircularProgress />) :
+                                    (<DeleteIcon color='error' />)
+                            }
                         </IconButton>
+
                     </Box>) : (cardContent)
             }
 

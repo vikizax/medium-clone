@@ -8,7 +8,7 @@ import Marker from '@editorjs/marker';
 import Delimiter from '@editorjs/delimiter';
 import SimpleImage from '@editorjs/simple-image';
 import axios from 'axios';
-import api from '../../constant/api.constant';
+import apiV2 from '../../constant/apiV2.constant';
 
 export const EDITOR_JS_TOOLS = {
     header: Header,
@@ -21,18 +21,20 @@ export const EDITOR_JS_TOOLS = {
                 uploadByFile(file) {
                     const formData = new FormData();
                     formData.append('image', file);
-                    return axios.post(api.uploadFile, formData, {
+                    return axios.post(apiV2.uploadFile, formData, {
                         withCredentials: true,
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }
-                    }).then(res => ({
-                        success: 1,
-                        file: {
-                            url: api.image + res.data.fileName
+                    }).then(res => {
+                        return {
+                            success: 1,
+                            file: {
+                                url: res.data.url,
+                                public_id: res.data.public_id
+                            }
                         }
-                    }
-                    ))
+                    })
                 },
             }
         }

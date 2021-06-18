@@ -17,8 +17,7 @@ import { editorAtom, modalAtom, userAtom, alertAtom } from '../../global/global.
 import { publishArticle } from '../../global/action';
 import api from '../../constant/api.constant';
 
-
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
     grow: {
         flexGrow: 1,
     },
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         },
         textDecoration: 'none',
     }
-}));
+});
 
 const Header = ({ isLoading }) => {
     const classes = useStyles();
@@ -51,7 +50,7 @@ const Header = ({ isLoading }) => {
 
     const { mutateAsync, reset } = useMutation(publishArticle, {
         onSuccess: () => {
-            
+
             queryClient.invalidateQueries('articleQ');
 
             reset();
@@ -122,11 +121,12 @@ const Header = ({ isLoading }) => {
                 severity: 'warning'
             });
 
-        let displayImage;
+        let displayImage = {};
         for (let i = 0; i < blocks.length; i++) {
             if (blocks[i].type === 'image') {
                 if (Boolean(blocks[i].data.file.url)) {
-                    displayImage = blocks[i].data.file.url.replace(api.image, '');
+                    displayImage['url'] = blocks[i].data.file.url;
+                    displayImage['public_id'] = blocks[i].data.file.public_id;
                     break;
                 } else {
                     setAlert({

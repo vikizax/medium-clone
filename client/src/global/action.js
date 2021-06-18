@@ -1,5 +1,6 @@
 import axios from 'axios';
 import api from '../constant/api.constant';
+import apiV2 from '../constant/apiV2.constant';
 
 export const getArticle = async ({ queryKey }, credentials) => {
     const [_key, id] = queryKey;
@@ -59,6 +60,6 @@ export const publishArticle = async (
 }
 
 export const deleteArticle = async (id) => {
-    const response = await axios.delete(api.article + '/' + id, { withCredentials: true });
+    const response = await axios.delete(apiV2.article + '/' + id, { withCredentials: true });
     return response.statusText;
 }

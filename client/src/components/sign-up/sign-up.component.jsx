@@ -90,7 +90,7 @@ const SignUp = () => {
             })
             .catch(error => {
                 setLoading(false);
-                if (error.response.status == 409)
+                if (error.response.status === 409)
                     setEmailError(error.response.data.message)
             });
     }

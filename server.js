@@ -2,10 +2,6 @@ import app from './app.js';
 import mongoose from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
 
-if (process.env.NODE_ENV == 'development') {
-    import('dotenv').then(dotenv => dotenv.config());
-}
-
 const port = process.env.PORT || 5000;
 
 // Cloudinary config

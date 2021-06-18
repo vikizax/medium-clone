@@ -1,4 +1,4 @@
-import ArticleModel from '../../models/v1/article.model.js';
+import ArticleModel from '../../models/article.model.js';
 import multer from 'multer';
 import factory from './factory.js';
 import AppError from '../../utils/AppError.js';

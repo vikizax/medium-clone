@@ -12,7 +12,7 @@ const EditArticlePage = () => {
     const [content, setContent] = useState(null);
     const setEditorContent = useSetRecoilState(editorAtom);
     const params = useParams();
-    const { data, isLoading, error, isError } = useQuery(['articleQ', params.id], getUserArticle);
+    const { data, isLoading, isError } = useQuery(['articleQ', params.id], getUserArticle);
 
     useEffect(() => {
         const newContent = JSON.parse(JSON.stringify(content));

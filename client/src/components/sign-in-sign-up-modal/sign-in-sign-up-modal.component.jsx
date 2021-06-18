@@ -1,5 +1,5 @@
 import React from 'react';
-import { atom, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SignInSignUpModal = ({ option }) => {
+const SignInSignUpModal = () => {
     const classes = useStyles();
     const [modal, setModalOption] = useRecoilState(modalAtom);
 
@@ -85,8 +85,8 @@ const SignInSignUpModal = ({ option }) => {
                     <Box alignSelf='center'>
                         <Container className={classes.paper} >
                             {
-                                modal.option == 'signup' ? <SignUp /> :
-                                    modal.option == 'signin' ? <SignIn /> : defaultContent
+                                modal.option === 'signup' ? <SignUp /> :
+                                    modal.option === 'signin' ? <SignIn /> : defaultContent
                             }
                         </Container>
                     </Box>

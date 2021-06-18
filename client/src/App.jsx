@@ -9,7 +9,6 @@ import CreateArticlePage from './pages/create-article-page/create-article.page';
 import HomePage from './pages/home-page/home.page';
 import ArticlePage from './pages/article-page/article.page';
 import SignInSignUpModal from './components/sign-in-sign-up-modal/sign-in-sign-up-modal.component'
-import ArticleListLoading from './components/article-list/article-list-loading.component';
 import MyArticlesPage from './pages/my-articles-page/my-articles.page';
 import EditArticlePage from './pages/edit-article-page/edit-article.page';
 import { modalAtom, userAtom, alertAtom } from './global/global.state';

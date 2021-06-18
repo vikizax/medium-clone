@@ -1,49 +1,27 @@
-import ArticleModel from '../../models/v1/article.model.js';
-import multer from 'multer';
-import factoryV1 from '../v1/factory.js';
+import { v2 as cloudinary } from 'cloudinary';
+import ArticleModel from '../../models/article.model.js'
+import factoryV2 from './factoryV2.js';
+import catchAsync from '../../utils/catchAsync.js';
 import AppError from '../../utils/AppError.js';
 
-// get all articles
-export const getAll = factoryV1.getAll(ArticleModel, 'author');
+export const deleteOne = factoryV2.deleteOne(ArticleModel);
 
-// get a article
-export const get = factoryV1.getOne(ArticleModel, 'author');
-
-// get all the user's articles
-export const getMy = factoryV1.getMy(ArticleModel);
-
-// create a article
-export const create = factoryV1.createOne(ArticleModel);
-
-// update a article
-export const update = factoryV1.updateOne(ArticleModel);
-
-// delete all article
-export const deleteAll = factoryV1.deleteAll(ArticleModel);
-
-// deleta a article
-export const deleteOne = factoryV1.deleteOne(ArticleModel);
-
-// upload image
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${req.user.id}_${file.originalname}`);
-    },
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image')) {
-            cb(null, true);
-        } else {
-            cb(new AppError('Not an Image. Please upload only image.', 400), false)
+export const uploadImage = catchAsync(
+    async (req, res, next) => {
+        
+        if (!req.files.image.type.startsWith('image')) {
+            return next(new AppError('Not an Image. Please upload only image.', 400));
         }
+
+        const response = await cloudinary.uploader.upload(req.files.image.path, {
+            resource_type: 'image',
+            folder: "uploads/"
+        });
+
+        return res.status(200).json({
+            message: 'Image uploaded.',
+            url: response.url,
+            public_id: response.public_id
+        });
     }
-})
-
-const upload = multer({ storage: storage })
-
-export const uploadImage = upload.single('image');
-export const uploadSuccess = (req, res) => res
-    .status(200)
-    .json({ message: 'Image uploaded.', fileName: res.req.file.filename })
+);
