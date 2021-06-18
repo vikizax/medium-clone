@@ -57,10 +57,10 @@ const Header = ({ isLoading }) => {
             reset();
             if (location.pathname.includes('/edit')) {
                 history.push('/stories');
-                setAlert({ hidden: false, message: 'Atricle Updated!', severity: 'success' });
+                setAlert({ hidden: false, message: 'Story Updated!', severity: 'success' });
             } else {
                 history.push('/');
-                setAlert({ hidden: false, message: 'Atricle Created!', severity: 'success' });
+                setAlert({ hidden: false, message: 'Story Created!', severity: 'success' });
             }
         },
         onError: () => {
@@ -111,14 +111,14 @@ const Header = ({ isLoading }) => {
         if (blocks.length === 0)
             return setAlert({
                 hidden: false,
-                message: 'Empty Article.',
+                message: 'Empty Story.',
                 severity: 'warning'
             });
 
         if (blocks.length > 0 && blocks[0].type !== 'header')
             return setAlert({
                 hidden: false,
-                message: 'Article must start with a Heading.',
+                message: 'Story must start with a Heading.',
                 severity: 'warning'
             });
 
@@ -131,7 +131,7 @@ const Header = ({ isLoading }) => {
                 } else {
                     setAlert({
                         hidden: false,
-                        message: 'Article must not contain empty image space.',
+                        message: 'Story must not contain empty image space.',
                         severity: 'warning'
                     });
                     return;
@@ -142,7 +142,7 @@ const Header = ({ isLoading }) => {
         if (!displayImage)
             return setAlert({
                 hidden: false,
-                message: 'Article must have a display image.',
+                message: 'Story must have a display image.',
                 severity: 'warning'
             });
 
