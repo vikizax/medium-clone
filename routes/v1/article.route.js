@@ -22,7 +22,10 @@ router
 
 // open to all
 router
-    .get('/', getAll)
+    .get('/', (req, res, next) => {
+        console.log('=========================HERE+++======');
+        next();
+    }, getAll)
     .get('/:id', get)
 
 // logged in user action  

@@ -38,8 +38,6 @@ app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(cookieParser());
 // app.use('/uploads', express.static('uploads'))
 
-console.log('------------================='+articleRouter);
-
 // version 1 routes
 app.use('/api/v1/article', articleRouter);
 app.use('/api/v1/user', userRouter);
