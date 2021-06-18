@@ -71,7 +71,7 @@ const ArticleCard = ({ isLoading, author, title, subTitle, displayImage, time, i
     });
 
 
-    const redirect = () => {
+    const redirect = () => { 
         if (location.pathname === '/stories') {
             history.push(`/edit/${id}`);
         }
