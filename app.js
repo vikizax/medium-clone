@@ -22,9 +22,17 @@ if (process.env.NODE_ENV == 'development') {
     app.use(morgan('dev'));
 }
 
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static('client/build'));
+    app.get('*', function (req, res) {
+        res.sendFile('client/build/index.html')
+    });
+}
+
 dotenv.config({
     path: './.env'
 });
+
 
 // middleware 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
