@@ -24,7 +24,7 @@ const EditArticlePage = () => {
     }
 
     if (isError) {
-        return (<div>{ }</div>)
+        return (<div>Something went wrong. Please reload.</div>)
     }
 
     return (

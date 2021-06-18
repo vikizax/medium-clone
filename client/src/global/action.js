@@ -2,6 +2,24 @@ import axios from 'axios';
 import api from '../constant/api.constant';
 import apiV2 from '../constant/apiV2.constant';
 
+export const signIn = async (formData) => {
+    const response = await axios.post(api.signin, formData, {
+        withCredentials: true
+    });
+
+    return response.data.result;
+}
+
+
+export const signUp = async (formData) => {
+    const response = await axios.post(api.signup, formData, {
+        withCredentials: true
+    });
+
+    return response.data.result;
+}
+
+
 export const getArticle = async ({ queryKey }, credentials) => {
     const [_key, id] = queryKey;
     let response;

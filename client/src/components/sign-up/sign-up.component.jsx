@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
-import axios from 'axios';
+import { useMutation } from 'react-query';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core'
@@ -9,7 +9,7 @@ import Link from '@material-ui/core/Link';
 import LineProgress from '@material-ui/core/LinearProgress';
 import isEmail from 'validator/lib/isEmail';
 import { userAtom, modalAtom } from '../../global/global.state';
-import api from '../../constant/api.constant';
+import { signUp } from '../../global/action';
 
 const useStyles = makeStyles({
     field: {
@@ -25,11 +25,10 @@ const useStyles = makeStyles({
 
 const SignUp = () => {
     const classes = useStyles();
-
     const setModelOption = useSetRecoilState(modalAtom);
     const setUserState = useSetRecoilState(userAtom);
     const resetModalState = useResetRecoilState(modalAtom);
-
+    
     const [formState, setFormState] = useState({
         firstName: '',
         lastName: '',
@@ -38,14 +37,24 @@ const SignUp = () => {
         confirmPassword: ''
     });
 
-    const [loading, setLoading] = useState(false);
-
     const [fNameError, setFNameError] = useState('');
     const [emailError, setEmailError] = useState('')
     const [pwdError, setPwdError] = useState('')
     const [confPwdError, setConfPwdError] = useState('')
 
-    const handleSubmit = e => {
+    const { mutateAsync, isLoading } = useMutation(signUp, {
+        onSuccess: (data) => {
+            setUserState(data);
+            resetModalState();
+        },
+        onError: (error) => {
+            if (error.response.status === 409)
+                setEmailError(error.response.data.message)
+        }
+    });
+
+
+    const handleSubmit = async e => {
         e.preventDefault();
         setFNameError('');
         setEmailError('');
@@ -78,26 +87,13 @@ const SignUp = () => {
         // check password == confirm password
         if (pwd !== cpwd) return setConfPwdError('Password does not match.')
 
-        setLoading(true);
+        await mutateAsync(formState);
 
-        axios.post(api.signup, formState, {
-            withCredentials: true
-        })
-            .then(response => {
-                setLoading(false);
-                setUserState(response.data.result);
-                resetModalState();
-            })
-            .catch(error => {
-                setLoading(false);
-                if (error.response.status === 409)
-                    setEmailError(error.response.data.message)
-            });
     }
 
     return (
         <React.Fragment>
-            {loading ? <LineProgress /> : ''}
+            {isLoading ? <LineProgress /> : ''}
             <form noValidate onSubmit={handleSubmit}>
                 <TextField
                     className={classes.field}
@@ -108,7 +104,7 @@ const SignUp = () => {
                     helperText={fNameError}
                     required
                     fullWidth
-                    disabled={loading}
+                    disabled={isLoading}
                 />
                 <TextField
                     className={classes.field}
@@ -116,7 +112,7 @@ const SignUp = () => {
                     label="Last Name"
                     variant="outlined"
                     fullWidth
-                    disabled={loading}
+                    disabled={isLoading}
                 />
                 <TextField
                     className={classes.field}
@@ -128,7 +124,7 @@ const SignUp = () => {
                     helperText={emailError}
                     required
                     fullWidth
-                    disabled={loading}
+                    disabled={isLoading}
                 />
                 <TextField
                     className={classes.field}
@@ -140,7 +136,7 @@ const SignUp = () => {
                     helperText={pwdError}
                     required
                     fullWidth
-                    disabled={loading}
+                    disabled={isLoading}
                 />
                 <TextField
                     className={classes.field}
@@ -152,20 +148,20 @@ const SignUp = () => {
                     helperText={confPwdError}
                     required
                     fullWidth
-                    disabled={loading}
+                    disabled={isLoading}
                 />
 
                 <Button
                     type='submit'
                     variant='outlined'
                     color='primary'
-                    disabled={loading}
+                    disabled={isLoading}
                 >
                     Sign-UP
-            </Button>
+                </Button>
 
                 {
-                    !loading ?
+                    !isLoading ?
                         (<Typography className={classes.foot}>
                             Already a user ? {' '}
                             <Link href=''

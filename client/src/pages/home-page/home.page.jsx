@@ -4,8 +4,6 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-// import { useRecoilValue } from 'recoil';
-// import { getArticles } from '../../global/global.state';
 import { getArticles } from '../../global/action';
 import ArticleList from '../../components/article-list/article-list.component';
 import ArticleListLoading from '../../components/article-list/article-list-loading.component';
