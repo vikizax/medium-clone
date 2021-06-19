@@ -7,7 +7,7 @@ import { getUserArticles } from '../../global/action';;
 
 const MyArticlesPage = () => {
 
-    const { data, isLoading, isError, error } = useQuery('myArticleQ', getUserArticles)
+    const { data, isLoading, isError, error, isSuccess } = useQuery('myArticleQ', getUserArticles)
 
     if (isError) {
         return (<div>{error.response.statusText}</div>);
@@ -18,8 +18,9 @@ const MyArticlesPage = () => {
             {
                 isLoading && (<ArticleListLoading />)
             }
-            <ArticleList data={data} isLoading={isLoading}/>
-
+            {
+                isSuccess && (<ArticleList data={data} isLoading={isLoading} />)
+            }
         </Container>
     );
 }

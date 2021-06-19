@@ -10,7 +10,6 @@ export const signIn = async (formData) => {
     return response.data.result;
 }
 
-
 export const signUp = async (formData) => {
     const response = await axios.post(api.signup, formData, {
         withCredentials: true
@@ -19,6 +18,15 @@ export const signUp = async (formData) => {
     return response.data.result;
 }
 
+export const getCurrentUser = async () => {
+    const response = await axios.get(api.currentUser, { withCredentials: true });
+    return response.data.result;
+}
+
+export const signOut = async () => {
+    const response = await axios.get(api.signout, { withCredentials: true });
+    return response.data.result;
+}
 
 export const getArticle = async ({ queryKey }, credentials) => {
     const [_key, id] = queryKey;

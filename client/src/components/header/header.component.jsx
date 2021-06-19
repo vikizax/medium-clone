@@ -84,9 +84,9 @@ const Header = ({ loadingUser }) => {
 
 
     const signOut = async () => {
+        setAnchorEl(null);
         await axios.get(api.signout, { withCredentials: true });
         resetUserState();
-        setAnchorEl(null);
     }
 
     const handleClick = (e) => {

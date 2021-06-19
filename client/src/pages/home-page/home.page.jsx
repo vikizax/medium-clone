@@ -23,7 +23,7 @@ const useStyle = makeStyles((theme) => ({
 
 const HomePage = () => {
     const classes = useStyle();
-    const { data, isLoading, isError } = useQuery('articlesQ', getArticles);
+    const { data, isLoading, isError, isSuccess } = useQuery('articlesQ', getArticles);
     return (
         <Container maxWidth='md'>
             <Grid container>
@@ -34,7 +34,9 @@ const HomePage = () => {
                     {
                         isError && (<div>Something went wrong. Please try again.</div>)
                     }
-                    <ArticleList data={data} />
+                    {
+                        isSuccess && (<ArticleList data={data} />)
+                    }
                 </Grid>
                 <Grid item md={4} className={classes.foot}>
                     <Typography className={classes.footLink} color='textSecondary'>
