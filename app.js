@@ -3,27 +3,22 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const globalErrorController = require('./controllers/globalError.controller');
 const path = require('path');
+const dotenv = require('dotenv');
+const AppError = require('./utils/AppError');
 
 // routes
 const articleRouter = require('./routes/v1/article.route');
 const articleRouterV2 = require('./routes/v2/article.route');
 const authenticationRouter = require('./routes/v1/authentication.route');
 const userRouter = require('./routes/v1/user.route');
-// dev dep
-const morgan = require('morgan');
-const dotenv = require('dotenv');
+
 const app = express();
 
+// dev dep
 if (process.env.NODE_ENV === 'development') {
+    const morgan = require('morgan');
     app.use(morgan('dev'));
     app.use(cors({ credentials: true, origin: 'http://localhost:3000'}));
-}
-
-if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, 'client/build')));
-    app.get('*', function (req, res) {
-        res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
-    });
 }
 
 dotenv.config({
@@ -44,9 +39,18 @@ app.use('/api/v1/auth', authenticationRouter);
 //  version 2 routes
 app.use('/api/v2/article', articleRouterV2);
 
-// app.all('*', (req, res, next) => {
-//     next(new AppError(`Cannot find ${req.originalUrl} on the server`, 404));
-// });
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.get('*', function (req, res) {
+        res.sendFile(path.join(__dirname, 'client/build', 'index.html'))
+    });
+}
+
+// default to not found if no route hits.
+app.all('*', (req, res, next) => {
+    next(new AppError(`Cannot find ${req.originalUrl} on the server`, 404));
+});
 
 // error controller
 app.use(globalErrorController);

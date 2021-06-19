@@ -34,8 +34,9 @@ export const getArticle = async ({ queryKey }, credentials) => {
 
     if (credentials)
         response = await axios.get(api.article + '/' + id, { withCredentials: true });
-
-    response = await axios.get(api.article + '/' + id);
+    else
+        response = await axios.get(api.article + '/' + id);
+        
     return response.data.result;
 }
 
@@ -44,8 +45,9 @@ export const getArticles = async (_, credentials) => {
 
     if (credentials)
         response = await axios.get(api.stories, { withCredentials: true });
+    else
+        response = await axios.get(api.article);
 
-    response = await axios.get(api.article);
     return response.data.result;
 }
 
