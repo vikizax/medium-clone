@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSetRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
@@ -15,8 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import { editorAtom, modalAtom, userAtom, alertAtom } from '../../global/global.state';
-import { publishArticle } from '../../global/action';
-import api from '../../constant/api.constant';
+import { publishArticle, signOut } from '../../global/action';
 
 const useStyles = makeStyles({
     grow: {
@@ -69,6 +67,13 @@ const Header = ({ loadingUser }) => {
         }
     });
 
+    const { mutateAsync: signOutUser } = useMutation(signOut, {
+        onSuccess: () => {
+            queryClient.invalidateQueries('userQ');
+            resetUserState();
+        }
+    });
+
     const articleToUpdate =
         location.pathname.startsWith('/edit') ?
             location.pathname.replace('/edit/', '') : null;
@@ -82,18 +87,14 @@ const Header = ({ loadingUser }) => {
         return () => window.removeEventListener('resize', handleResize)
     }, [])
 
-
-    const signOut = async () => {
-        setAnchorEl(null);
-        await axios.get(api.signout, { withCredentials: true });
-        resetUserState();
-    }
-
     const handleClick = (e) => {
         setAnchorEl(e.currentTarget);
     };
 
-    const handleSignOut = () => signOut();
+    const handleSignOut = async () => {
+        setAnchorEl(null);
+        await signOutUser();
+    }
 
     const handleClose = () => setAnchorEl(null);
 
@@ -210,7 +211,7 @@ const Header = ({ loadingUser }) => {
                 aria-haspopup="true"
                 onClick={handleClick}
             >
-                <Avatar>{ userState ? userState.firstName[0] : 'U'}</Avatar>
+                <Avatar>{userState ? userState.firstName[0] : 'U'}</Avatar>
             </IconButton>
 
             <Menu

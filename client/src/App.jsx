@@ -1,5 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import SnackBar from '@material-ui/core/Snackbar';
@@ -73,7 +74,7 @@ const App = () => {
       {
         modalView.view ? <SignInSignUpModal /> : ''
       }
-
+      <ReactQueryDevtools />
     </div>
   );
 }
