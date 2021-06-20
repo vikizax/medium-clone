@@ -17,7 +17,8 @@ const sendMail = async ({ to, subject, text, html }) => {
         text,
         html
     }
-    await sgMail.send(msg)
+    await sgMail.send(msg);
+    console.log('-------New User Mail Sent-------')
 };
 
 const signToken = (email, id, secret) => {
@@ -43,7 +44,6 @@ const sendSignedTokenCookie = (request, response, msg, result, token) => {
         )
         .json({ message: msg, result });
 }
-
 
 exports.signIn = catchAsync(
     async (req, res, next) => {
@@ -85,7 +85,7 @@ exports.signUp = catchAsync(
         sendMail({
             to: email,
             subject: MSG.NEW_USER_MAIL_SUBJECT,
-            text: `Welcome ${firstName} ${lastName} to MediumClone. Start writing your awsome stories now!`
+            text: `Welcome ${firstName} to MediumClone. Start writing your awsome stories now!`
         })
 
         sendSignedTokenCookie(req, res, MSG.SIGN_UP_SUCCESS, { email: result.email, firstName: result.firstName, lastName: result.lastName, _id: result.id, role: 'user' }, jwtToken);
