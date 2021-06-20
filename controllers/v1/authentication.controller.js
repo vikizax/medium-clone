@@ -1,16 +1,30 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const sgMail = require('@sendgrid/mail');
 const promisify = require('util').promisify;
 const UserModel = require('../../models/user.model');
 const MSG = require('../../constant/message.constant');
 const catchAsync = require('../../utils/catchAsync');
 const AppError = require('../../utils/AppError');
 
+const sendMail = async ({ to, subject, text, html }) => {
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
+    const msg = {
+        to,
+        from: process.env.SENDGRID_EMAIL_FROM,
+        subject,
+        text,
+        html
+    }
+    await sgMail.send(msg)
+};
+
 const signToken = (email, id, secret) => {
     return jwt.sign(
         { email, id },
         secret,
-        { expiresIn: "1d" }
+        { expiresIn: `${process.env.JWT_EXPIRES_IN_DAYS}d` }
     );
 }
 
@@ -29,6 +43,7 @@ const sendSignedTokenCookie = (request, response, msg, result, token) => {
         )
         .json({ message: msg, result });
 }
+
 
 exports.signIn = catchAsync(
     async (req, res, next) => {
@@ -63,11 +78,15 @@ exports.signUp = catchAsync(
 
         if (existingUser) return next(new AppError(MSG.USER_EXIST, 409));
 
-        // const hashPassword = await bcrypt.hash(password, 12);
-
         const result = await UserModel.create({ email, password, firstName, lastName });
 
         const jwtToken = signToken(result.email, result.id, secret);
+
+        sendMail({
+            to: email,
+            subject: MSG.NEW_USER_MAIL_SUBJECT,
+            text: `Welcome ${firstName} ${lastName} to MediumClone. Start writing your awsome stories now!`
+        })
 
         sendSignedTokenCookie(req, res, MSG.SIGN_UP_SUCCESS, { email: result.email, firstName: result.firstName, lastName: result.lastName, _id: result.id, role: 'user' }, jwtToken);
     }

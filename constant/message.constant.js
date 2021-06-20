@@ -23,5 +23,6 @@ module.exports = {
     EMPTY_CREDENTIALS: 'Please provide email and password.',
     INVALID_TOKEN: 'Invalid Token. Please Sign-in again.',
     TOKEN_EXPIRED: 'Token expired. Please Sign-in again.',
-    NO_PERMISSION: 'You do not have permission to perform this action.'
+    NO_PERMISSION: 'You do not have permission to perform this action.',
+    NEW_USER_MAIL_SUBJECT: 'Welcome to MediumClone!'
 }
