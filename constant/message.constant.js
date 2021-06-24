@@ -24,5 +24,9 @@ module.exports = {
     INVALID_TOKEN: 'Invalid Token. Please Sign-in again.',
     TOKEN_EXPIRED: 'Token expired. Please Sign-in again.',
     NO_PERMISSION: 'You do not have permission to perform this action.',
-    NEW_USER_MAIL_SUBJECT: 'Welcome to MediumClone!'
+    NEW_USER_MAIL_SUBJECT: 'Welcome to MediumClone!',
+    PASSWORD_RESET: 'Please check your mail to reset your password.',
+    PASSWORD_TOKEN_INVALID: 'Invalid token or token expired.',
+    PASSWORD_CHANGED: 'You have changed your password. If it was not done by you please report back.',
+    PASSWORD_CHANGD_SUCCESS: 'Password changed success.'
 }

@@ -8,14 +8,15 @@ exports.deleteOne = factoryV2.deleteOne(ArticleModel);
 
 exports.uploadImage = catchAsync(
     async (req, res, next) => {
-        
+
         if (!req.files.image.type.startsWith('image')) {
             return next(new AppError('Not an Image. Please upload only image.', 400));
         }
 
         const response = await cloudinary.uploader.upload(req.files.image.path, {
             resource_type: 'image',
-            folder: "uploads/"
+            folder: "uploads/",
+            secure: true
         });
 
         return res.status(200).json({

@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
 const promisify = require('util').promisify;
@@ -8,6 +9,8 @@ const catchAsync = require('../../utils/catchAsync');
 const AppError = require('../../utils/AppError');
 
 const sendMail = async ({ to, subject, text, html }) => {
+
+
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
     const msg = {
@@ -18,7 +21,7 @@ const sendMail = async ({ to, subject, text, html }) => {
         html
     }
     await sgMail.send(msg);
-    console.log('-------New User Mail Sent-------')
+
 };
 
 const signToken = (email, id, secret) => {
@@ -133,3 +136,80 @@ exports.isLoggedIn = async (req, res, next) => {
     });
 }
 
+exports.forgetPassword = catchAsync(async (req, res, next) => {
+    const user = await UserModel.findOne({ email: req.body.email });
+
+    if (!user)
+        return next(new AppError('No user found.', 404));
+
+    try {
+
+        const resetToken = user.createPasswordResetToken();
+
+        await user.save({ validateBeforeSave: false });
+
+        const resetURL = `${req.protocol}://${req.get('host')}/resetPassword/${resetToken}`
+
+        await sendMail({
+            to: req.body.email,
+            subject: 'Reset Password',
+            html: `<div>Go to the following link to reset your password: <br> <a href='${resetURL}'>RESET PASSWORD</a></div>`
+        });
+
+        res.status(200).json({
+            message: MSG.PASSWORD_RESET
+        });
+    }
+    catch (error) {
+
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+
+        await user.save({ validateBeforeSave: false })
+
+        return next(MSG.SERVER_ERROR, 500)
+
+    }
+});
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    const secret = process.env.SERVER_SECRET;
+
+    const token = crypto
+        .createHash('sha256')
+        .update(req.body.token)
+        .digest('hex');
+
+    const user = await UserModel.findOne({
+        passwordResetToken: token,
+        passwordResetExpires: { $gt: Date.now() }
+    });
+
+    if (!user) return next(MSG.PASSWORD_TOKEN_INVALID, 400);
+
+    user.password = req.body.password;
+    user.passwordResetExpires = undefined;
+    user.passwordResetToken = undefined;
+
+    await user.save();
+
+    const jwtToken = signToken(user.email, user.id, secret);
+
+    sendMail({
+        to: user.email,
+        subject: 'Password Updated',
+        text: MSG.PASSWORD_CHANGED
+    })
+
+    sendSignedTokenCookie(
+        req,
+        res, MSG.PASSWORD_CHANGD_SUCCESS,
+        {
+            email: user.email,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            _id: user.id,
+            role: 'user'
+        }, jwtToken);
+
+});

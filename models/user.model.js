@@ -1,3 +1,4 @@
+const crypto = require('crypto');
 const mongoose = require('mongoose');
 const isEmail = require('validator/lib/isEmail.js');
 const bcrypt = require('bcryptjs');
@@ -8,9 +9,7 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: [true, 'First name is required']
         },
-        lastName: {
-            type: String,
-        },
+        lastName: String,
         email: {
             type: String,
             unique: true,
@@ -27,7 +26,9 @@ const UserSchema = new mongoose.Schema(
             type: String,
             enum: ['user', 'admin'],
             default: 'user'
-        }
+        },
+        passwordResetToken: String,
+        passwordResetExpires: Date
     }
 );
 
@@ -41,6 +42,18 @@ UserSchema.pre('save', async function (next) {
     next();
 });
 
+UserSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    this.passwordResetToken = crypto.
+        createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
+
+    return resetToken;
+}
 
 const UserModel = mongoose.model('User', UserSchema);
 
