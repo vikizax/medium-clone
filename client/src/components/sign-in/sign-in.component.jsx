@@ -3,6 +3,7 @@ import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import { useMutation } from 'react-query';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import Box from '@material-ui/core/Box';
 import { makeStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
@@ -116,16 +117,29 @@ const SignUp = () => {
                 {
                     !isLoading ?
                         (
-                            <Typography className={classes.foot}>
-                                Don't have an account ? {' '}
-                                <Link href=''
-                                    onClick={
-                                        (e) => {
-                                            e.preventDefault();
-                                            setModelOption(current => ({ ...current, option: 'signup' }))
-                                        }
-                                    }>Signup</Link>
-                            </Typography>
+                            <Box>
+                                <Typography className={classes.foot}>
+                                    Forget Password ? {' '}
+                                    <Link href=''
+                                        onClick={
+                                            (e) => {
+                                                e.preventDefault();
+                                                setModelOption(current => ({ ...current, option: 'forgetpassword' }))
+                                            }
+                                        }>Change Password</Link>
+                                </Typography>
+                                <Typography className={classes.foot}>
+                                    Don't have an account ? {' '}
+                                    <Link href=''
+                                        onClick={
+                                            (e) => {
+                                                e.preventDefault();
+                                                setModelOption(current => ({ ...current, option: 'signup' }))
+                                            }
+                                        }>Signup</Link>
+                                </Typography>
+                                
+                            </Box>
                         ) : ''
                 }
             </form>

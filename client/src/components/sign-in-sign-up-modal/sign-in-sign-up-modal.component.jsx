@@ -6,11 +6,13 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import SignIn from '../sign-in/sign-in.component';
 import SignUp from '../sign-up/sign-up.component';
+import ForgetPassword from '../forget-password/forget-password.component';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { modalAtom } from '../../global/global.state';
+import { model } from 'mongoose';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -85,7 +87,8 @@ const SignInSignUpModal = () => {
                         <Container className={classes.paper} >
                             {
                                 modal.option === 'signup' ? <SignUp /> :
-                                    modal.option === 'signin' ? <SignIn /> : defaultContent
+                                    modal.option === 'signin' ? <SignIn /> :
+                                        modal.option === 'forgetpassword' ? <ForgetPassword /> : defaultContent
                             }
                         </Container>
                     </Box>

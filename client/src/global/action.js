@@ -28,6 +28,11 @@ export const signOut = async () => {
     return response.data.result;
 }
 
+export const forgetPassword = async () => {
+    const response = await axios.post(api.forgetPassword);
+    return response.data.result;
+}
+
 export const getArticle = async ({ queryKey }, credentials) => {
     const [_key, id] = queryKey;
     let response;
@@ -36,7 +41,7 @@ export const getArticle = async ({ queryKey }, credentials) => {
         response = await axios.get(api.article + '/' + id, { withCredentials: true });
     else
         response = await axios.get(api.article + '/' + id);
-        
+
     return response.data.result;
 }
 
