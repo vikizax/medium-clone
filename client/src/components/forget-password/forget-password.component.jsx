@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core'
 import Link from '@material-ui/core/Link';
 import LineProgress from '@material-ui/core/LinearProgress';
-import { modalAtom } from '../../global/global.state';
+import { modalAtom, alertAtom } from '../../global/global.state';
 import { forgetPassword } from '../../global/action';
 
 import isEmail from 'validator/lib/isEmail';
@@ -27,11 +27,20 @@ const ForgetPassowrd = () => {
     const classes = useStyles();
     const setModelOption = useSetRecoilState(modalAtom);
     const resetModalState = useResetRecoilState(modalAtom);
-    const { mutateAsync, isLoading } = useMutation(forgetPassword);
+    const setAlert = useSetRecoilState(alertAtom);
+    const { mutateAsync, isLoading } = useMutation(forgetPassword, {
+        onSuccess: (data) => {
+            resetModalState();
+            setAlert({ hidden: false, message: data.message, severity: 'success' });
+        },
+        onError: () => {
+            resetModalState();
+            setAlert({ hidden: false, message: 'Something went wrong. Please try again.', severity: 'error' });
+        }
+    });
 
     const [formState, setFormState] = useState({
         email: '',
-        password: '',
     });
 
     const [emailError, setEmailError] = useState('')
@@ -40,27 +49,23 @@ const ForgetPassowrd = () => {
         e.preventDefault();
         setEmailError('');
 
-        const { email, password: pwd } = formState;
+        const { email } = formState;
 
-        // check empty required field
-        if (!email && !pwd) {
-            return;
-        }
         if (!email) return setEmailError('Email is required.');
 
         // validate format email
         if (!isEmail(email)) return setEmailError('Invalid email format.');
 
-        // await mutateAsync(formState);
+        await mutateAsync(formState);
     }
 
     return (
         <React.Fragment>
-            {/* {isLoading ? <LineProgress /> : ''} */}
+            {isLoading ? <LineProgress /> : ''}
             <form noValidate onSubmit={handleSubmit}>
                 <TextField
                     className={classes.field}
-                    onChange={(e) => setFormState(current => ({ ...current, email: e.target.value }))}
+                    onChange={(e) => setFormState(() => ({ email: e.target.value }))}
                     label="Email"
                     variant="outlined"
                     type='email'
@@ -68,31 +73,18 @@ const ForgetPassowrd = () => {
                     error={Boolean(emailError)}
                     helperText={emailError}
                     fullWidth
-                // disabled={isLoading}
+                    disabled={isLoading}
                 />
 
                 <Button
                     type='submit'
                     variant='outlined'
                     color='primary'
-                // disabled={isLoading}
+                    disabled={isLoading}
                 >
                     Send Mail
                 </Button>
 
-                {/* {
-                    !isLoading ?
-                        (
-                            <Link href=''
-                                onClick={
-                                    (e) => {
-                                        e.preventDefault();
-                                        setModelOption(current => ({ ...current, option: 'signup' }))
-                                    }
-                                }>Signup</Link>
-
-                        ) : ''
-                } */}
             </form>
         </React.Fragment>
     );

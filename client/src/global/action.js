@@ -28,9 +28,9 @@ export const signOut = async () => {
     return response.data.result;
 }
 
-export const forgetPassword = async () => {
-    const response = await axios.post(api.forgetPassword);
-    return response.data.result;
+export const forgetPassword = async (formData) => {
+    const response = await axios.post(api.forgetPassword, formData);
+    return response.data;
 }
 
 export const getArticle = async ({ queryKey }, credentials) => {
