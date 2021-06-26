@@ -36,7 +36,6 @@ const SignUp = () => {
         onSuccess: (data) => {
             setUserState(data);
             resetModalState();
-
         },
         onError: (error) => {
             setModelOption(current => ({ ...current, loading: false }));

@@ -28,5 +28,5 @@ module.exports = {
     PASSWORD_RESET: 'Please check your mail to reset your password.',
     PASSWORD_TOKEN_INVALID: 'Invalid token or token expired.',
     PASSWORD_CHANGED: 'You have changed your password. If it was not done by you please report back.',
-    PASSWORD_CHANGD_SUCCESS: 'Password changed success.'
+    PASSWORD_CHANGED_SUCCESS: 'Password changed success.'
 }

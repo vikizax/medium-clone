@@ -101,7 +101,7 @@ exports.signOut = (req, res) => {
         httpOnly: true,
         secure: req.headers['x-forwarded-proto'] === 'https'
     });
-    res.status(200).json({ status: 'success' });
+    res.status(200).json({ message: 'success' });
 };
 
 exports.isLoggedIn = async (req, res, next) => {
@@ -201,15 +201,10 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
         text: MSG.PASSWORD_CHANGED
     })
 
-    sendSignedTokenCookie(
-        req,
-        res, MSG.PASSWORD_CHANGD_SUCCESS,
-        {
-            email: user.email,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            _id: user.id,
-            role: 'user'
-        }, jwtToken);
-
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 1 * 1000),
+        httpOnly: true,
+        secure: req.headers['x-forwarded-proto'] === 'https'
+    });
+    res.status(200).json({ message: 'Password Changed success.' });
 });

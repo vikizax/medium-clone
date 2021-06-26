@@ -4,7 +4,6 @@ import { useMutation } from 'react-query';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core'
-import Link from '@material-ui/core/Link';
 import LineProgress from '@material-ui/core/LinearProgress';
 import { modalAtom, alertAtom } from '../../global/global.state';
 import { forgetPassword } from '../../global/action';
@@ -29,6 +28,9 @@ const ForgetPassowrd = () => {
     const resetModalState = useResetRecoilState(modalAtom);
     const setAlert = useSetRecoilState(alertAtom);
     const { mutateAsync, isLoading } = useMutation(forgetPassword, {
+        onMutate: () => {
+            setModelOption(current => ({ ...current, loading: true }));
+        },
         onSuccess: (data) => {
             resetModalState();
             setAlert({ hidden: false, message: data.message, severity: 'success' });

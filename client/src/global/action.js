@@ -33,6 +33,13 @@ export const forgetPassword = async (formData) => {
     return response.data;
 }
 
+export const updatePassword = async (formData) => {
+    const response = await axios.patch(api.updatePassword, formData);
+    console.log(response.data)
+    return response.data;
+}
+
+
 export const getArticle = async ({ queryKey }, credentials) => {
     const [_key, id] = queryKey;
     let response;

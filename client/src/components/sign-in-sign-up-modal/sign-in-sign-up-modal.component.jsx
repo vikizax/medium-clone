@@ -12,8 +12,6 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
 import { modalAtom } from '../../global/global.state';
-import { model } from 'mongoose';
-
 
 const useStyles = makeStyles((theme) => ({
     modal: {

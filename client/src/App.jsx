@@ -12,6 +12,7 @@ import ArticlePage from './pages/article-page/article.page';
 import SignInSignUpModal from './components/sign-in-sign-up-modal/sign-in-sign-up-modal.component'
 import MyArticlesPage from './pages/my-articles-page/my-articles.page';
 import EditArticlePage from './pages/edit-article-page/edit-article.page';
+import UpdatePassword from './components/reset-password/reset-password.component';
 import { modalAtom, userAtom, alertAtom } from './global/global.state';
 import { getCurrentUser } from './global/action';
 
@@ -51,6 +52,7 @@ const App = () => {
               (<Redirect to='/' />) :
               (<EditArticlePage />))}
         />
+        <Route path='/resetPassword/:token' component={UpdatePassword}/>
         <Route exact path='/stories' render={() => (
           !currentUser ?
             (<Redirect to='/' />) :

@@ -9,7 +9,8 @@ const api =
             'image': '/uploads/',
             'article': '/api/v1/article',
             'stories': '/api/v1/article/stories',
-            'forgetPassword': '/api/v1/auth/forgetPassword'
+            'forgetPassword': '/api/v1/auth/forgetPassword',
+            'updatePassword': '/api/v1/auth/updatePassword'
         } : {
             'signup': 'http://localhost:5000/api/v1/auth/signup',
             'signin': 'http://localhost:5000/api/v1/auth/signin',
@@ -19,7 +20,8 @@ const api =
             'image': 'http://localhost:5000/uploads/',
             'article': 'http://localhost:5000/api/v1/article',
             'stories': 'http://localhost:5000/api/v1/article/stories',
-            'forgetPassword': 'http://localhost:5000/api/v1/auth/forgetPassword'
+            'forgetPassword': 'http://localhost:5000/api/v1/auth/forgetPassword',
+            'updatePassword': 'http://localhost:5000/api/v1/auth/updatePassword'
         }
 
 export default api;
