@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useMutation } from 'react-query';
 import { useSetRecoilState, useResetRecoilState } from 'recoil';
 import { makeStyles } from '@material-ui/core';
@@ -27,6 +27,7 @@ const UpdatePassword = () => {
 
     const classes = useStyles();
     const params = useParams();
+    const history = useHistory();
     const setModelOption = useSetRecoilState(modalAtom);
     const resetModalState = useResetRecoilState(modalAtom);
     const setAlert = useSetRecoilState(alertAtom);
@@ -43,13 +44,14 @@ const UpdatePassword = () => {
         onMutate: () => {
             setModelOption(current => ({ ...current, loading: true }));
         },
-        onSuccess: data => {
+        onSuccess: () => {
             resetModalState();
             setAlert({
                 hidden: false,
                 message: 'Password Changed.',
                 severity: 'success'
             });
+            history.push('/');
         },
         onError: () => {
             setModelOption(current => ({ ...current, loading: false }));
@@ -58,6 +60,7 @@ const UpdatePassword = () => {
                 message: 'Something went wrong. Please try again.',
                 severity: 'error'
             });
+            history.push('/');
         }
     });
 
@@ -86,7 +89,7 @@ const UpdatePassword = () => {
 
     return (
         <Container maxWidth={'xs'}>
-            <Box display={'flex'} flexDirection={'column'} >
+            <Box display={'flex'} flexDirection={'column'} padding={5}>
                 {isLoading ? <LinearProgress /> : ''}
 
                 <Typography variant='subtitle1' className={classes.title}>

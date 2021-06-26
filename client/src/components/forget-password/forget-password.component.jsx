@@ -32,12 +32,16 @@ const ForgetPassowrd = () => {
             setModelOption(current => ({ ...current, loading: true }));
         },
         onSuccess: (data) => {
-            resetModalState();
             setAlert({ hidden: false, message: data.message, severity: 'success' });
+            resetModalState();
         },
         onError: () => {
             resetModalState();
-            setAlert({ hidden: false, message: 'Something went wrong. Please try again.', severity: 'error' });
+            setAlert({
+                hidden: false,
+                message: 'Something went wrong. Please try again.',
+                severity: 'error'
+            });
         }
     });
 

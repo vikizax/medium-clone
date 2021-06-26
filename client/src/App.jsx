@@ -65,7 +65,7 @@ const App = () => {
         open={!alertContent.hidden}
         onClose={closeAlert}
         message={alertContent.message}
-        key={'bottom' + 'left'}
+        key={'bottomleft'}
         autoHideDuration={2000}
       >
         <Alert onClose={closeAlert} severity={alertContent.severity}>
