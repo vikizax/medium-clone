@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { useQuery } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import SnackBar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert'
 import Header from './components/header/header.component';
-import CreateArticlePage from './pages/create-article-page/create-article.page';
-import HomePage from './pages/home-page/home.page';
-import ArticlePage from './pages/article-page/article.page';
 import SignInSignUpModal from './components/sign-in-sign-up-modal/sign-in-sign-up-modal.component'
-import MyArticlesPage from './pages/my-articles-page/my-articles.page';
-import EditArticlePage from './pages/edit-article-page/edit-article.page';
-import UpdatePassword from './components/reset-password/reset-password.component';
 import { modalAtom, userAtom, alertAtom } from './global/global.state';
 import { getCurrentUser } from './global/action';
+
+const HomePage = lazy(() => import('./pages/home-page/home.page'));
+
+const CreateArticlePage = lazy(() => import('./pages/create-article-page/create-article.page'));
+
+const ArticlePage = lazy(() => import('./pages/article-page/article.page'));
+
+const MyArticlesPage = lazy(() => import('./pages/my-articles-page/my-articles.page'));
+
+const EditArticlePage = lazy(() => import('./pages/edit-article-page/edit-article.page'));
+
+const UpdatePasswordPage = lazy(() => import('./pages/reset-password-page/reset-password.page'))
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -37,27 +44,39 @@ const App = () => {
   return (
     <div>
       <Header loadingUser={isLoading} />
+
       <Switch>
-        <Route exact path='/' component={HomePage} />
-        <Route path='/article/:id' component={ArticlePage} />
-        <Route
-          exact path='/create'
-          render={() => !currentUser ?
-            (<Redirect to='/' />) :
-            (<CreateArticlePage />)}
-        />
-        <Route path='/edit/:id'
-          render={() => (
+
+        <Suspense fallback={<LinearProgress />}>
+
+          <Route exact path='/' component={HomePage} />
+
+          <Route
+            exact path='/create'
+            render={() => !currentUser ?
+              (<Redirect to='/' />) :
+              (<CreateArticlePage />)}
+          />
+
+          <Route path='/article/:id' component={ArticlePage} />
+
+          <Route exact path='/stories' render={() => (
             !currentUser ?
               (<Redirect to='/' />) :
-              (<EditArticlePage />))}
-        />
-        <Route path='/resetPassword/:token' component={UpdatePassword}/>
-        <Route exact path='/stories' render={() => (
-          !currentUser ?
-            (<Redirect to='/' />) :
-            (<MyArticlesPage />)
-        )} />
+              (<MyArticlesPage />)
+          )} />
+
+          <Route path='/edit/:id'
+            render={() => (
+              !currentUser ?
+                (<Redirect to='/' />) :
+                (<EditArticlePage />))}
+          />
+
+          <Route path='/resetPassword/:token' component={UpdatePasswordPage} />
+
+        </Suspense>
+
       </Switch>
 
       <SnackBar
