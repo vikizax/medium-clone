@@ -24,7 +24,7 @@ const EditArticlePage = lazy(() => import('./pages/edit-article-page/edit-articl
 
 const UpdatePasswordPage = lazy(() => import('./pages/reset-password-page/reset-password.page'))
 
-const NotFoundPage = lazy(() => import('./pages/not-found-page/not-found.page'));
+// const NotFoundPage = lazy(() => import('./pages/not-found-page/not-found.page'));
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -47,12 +47,12 @@ const App = () => {
   return (
     <div>
       <Header loadingUser={isLoading} />
+
       <Suspense fallback={<LinearProgress />}>
 
         <Switch>
 
           <ErrorBoundary>
-
 
             <Route exact path='/' component={HomePage} />
 
@@ -80,15 +80,15 @@ const App = () => {
 
             <Route path='/resetPassword/:token' component={UpdatePasswordPage} />
 
-            <Route path='/404' component={NotFoundPage} />
+            {/* <Route path='/404' component={NotFoundPage} /> */}
 
-            <Redirect to="/404" />
+            {/* <Redirect to="/404" /> */}
 
           </ErrorBoundary>
 
         </Switch>
       </Suspense>
-      
+
       <SnackBar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         open={!alertContent.hidden}
