@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useRecoilValue, useRecoilState } from 'recoil';
+import ErrorBoundary from './components/error-boundary/error-boundary.component';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import SnackBar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert'
@@ -22,6 +23,8 @@ const MyArticlesPage = lazy(() => import('./pages/my-articles-page/my-articles.p
 const EditArticlePage = lazy(() => import('./pages/edit-article-page/edit-article.page'));
 
 const UpdatePasswordPage = lazy(() => import('./pages/reset-password-page/reset-password.page'))
+
+const NotFoundPage = lazy(() => import('./pages/not-found-page/not-found.page'));
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -44,41 +47,48 @@ const App = () => {
   return (
     <div>
       <Header loadingUser={isLoading} />
+      <Suspense fallback={<LinearProgress />}>
 
-      <Switch>
+        <Switch>
 
-        <Suspense fallback={<LinearProgress />}>
+          <ErrorBoundary>
 
-          <Route exact path='/' component={HomePage} />
 
-          <Route
-            exact path='/create'
-            render={() => !currentUser ?
-              (<Redirect to='/' />) :
-              (<CreateArticlePage />)}
-          />
+            <Route exact path='/' component={HomePage} />
 
-          <Route path='/article/:id' component={ArticlePage} />
+            <Route
+              exact path='/create'
+              render={() => !currentUser ?
+                (<Redirect to='/' />) :
+                (<CreateArticlePage />)}
+            />
 
-          <Route exact path='/stories' render={() => (
-            !currentUser ?
-              (<Redirect to='/' />) :
-              (<MyArticlesPage />)
-          )} />
+            <Route path='/article/:id' component={ArticlePage} />
 
-          <Route path='/edit/:id'
-            render={() => (
+            <Route exact path='/stories' render={() => (
               !currentUser ?
                 (<Redirect to='/' />) :
-                (<EditArticlePage />))}
-          />
+                (<MyArticlesPage />)
+            )} />
 
-          <Route path='/resetPassword/:token' component={UpdatePasswordPage} />
+            <Route path='/edit/:id'
+              render={() => (
+                !currentUser ?
+                  (<Redirect to='/' />) :
+                  (<EditArticlePage />))}
+            />
 
-        </Suspense>
+            <Route path='/resetPassword/:token' component={UpdatePasswordPage} />
 
-      </Switch>
+            <Route path='/404' component={NotFoundPage} />
 
+            <Redirect to="/404" />
+
+          </ErrorBoundary>
+
+        </Switch>
+      </Suspense>
+      
       <SnackBar
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
         open={!alertContent.hidden}
@@ -95,7 +105,9 @@ const App = () => {
       {
         modalView.view ? <SignInSignUpModal /> : ''
       }
+
       <ReactQueryDevtools />
+
     </div>
   );
 }
