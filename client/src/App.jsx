@@ -24,7 +24,7 @@ const EditArticlePage = lazy(() => import('./pages/edit-article-page/edit-articl
 
 const UpdatePasswordPage = lazy(() => import('./pages/reset-password-page/reset-password.page'))
 
-// const NotFoundPage = lazy(() => import('./pages/not-found-page/not-found.page'));
+const NotFoundPage = lazy(() => import('./pages/not-found-page/not-found.page'));
 
 const Alert = (props) => {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -46,6 +46,7 @@ const App = () => {
 
   return (
     <div>
+
       <Header loadingUser={isLoading} />
 
       <Suspense fallback={<LinearProgress />}>
@@ -79,14 +80,32 @@ const App = () => {
             />
 
             <Route path='/resetPassword/:token' component={UpdatePasswordPage} />
+            
+            <Route render={({ location: { pathname } }) => {
 
-            {/* <Route path='/404' component={NotFoundPage} /> */}
+              const paths = ['/create', '/article', '/resetPassword', '/edit', '/stories'];
 
-            {/* <Redirect to="/404" /> */}
+              const contains = (target, pattern) => {
+                let value = 0;
+                pattern.forEach(function (word) {
+                  value = value + target.includes(word);
+                });
+                return (value === 1)
+              }
+
+              if (contains(pathname, paths))
+                return
+              else if (pathname === '/')
+                return
+              else
+                return (<NotFoundPage />);
+
+            }} />
 
           </ErrorBoundary>
 
         </Switch>
+
       </Suspense>
 
       <SnackBar
