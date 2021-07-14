@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import * as multer from 'multer';
-import { unlink } from 'fs/promises';
 import factory from './factory';
 import catchAsync from '../../utils/catchAsync';
 import ArticleModel, { IArticleDocument } from '../../models/v1/article.model';
-import { IUserInfoRequest } from '../../types/user-request.type';
+import { IUserInfoRequest } from '../../types/request.type';
+import { v2 as cloudinary } from 'cloudinary';
+import { modelType } from '../../types/factory.type';
 
 // get all articles
 export const getAll = catchAsync(
@@ -26,7 +26,7 @@ export const getAll = catchAsync(
 )
 
 // get a article
-export const get = factory.getOne(ArticleModel, 'author');
+export const get = factory.getOne(ArticleModel as modelType, 'author');
 
 // get all the user's articles
 export const getMy = catchAsync(
@@ -45,54 +45,53 @@ export const getMy = catchAsync(
 )
 
 // create a article
-export const create = factory.createOne(ArticleModel);
+export const create = factory.createOne(ArticleModel as modelType);
 
 // update a article
-export const update = factory.updateOne(ArticleModel);
+export const update = factory.updateOne(ArticleModel as modelType);
 
 // delete all article
-export const deleteAll = factory.deleteAll(ArticleModel);
+export const deleteAll = factory.deleteAll(ArticleModel as modelType);
 
 // deleta a article
 export const deleteOne = catchAsync(
-    async (req: IUserInfoRequest, res: Response, next: NextFunction) => {
+    async (req, res, next) => {
 
-        const doc = await ArticleModel.findOneAndDelete({
+        const doc: IArticleDocument = await ArticleModel.findOneAndDelete({
             _id: req.params.id,
             author: req.user.id
         });
 
         if (!doc) return next(new AppError(MSG.NO_DOCUMENT, 404));
 
-        await unlink('./uploads/' + doc.displayImage);
+        await cloudinary.uploader.destroy(doc.displayImage.public_id);
 
         res.status(204).json({
             message: MSG.DOCUMENT_DELETE,
             result: null
         });
-    }
-)
 
-// upload image
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${req.user.id}_${file.originalname}`);
-    },
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype.startsWith('image')) {
-            cb(null, true);
-        } else {
-            cb(new AppError('Not an Image. Please upload only image.', 400), false)
+    }
+);
+
+// image upload
+export const uploadImage = catchAsync(
+    async (req: IUserInfoRequest, res: Response, next: NextFunction) => {
+
+        if (!req.files.image.type.startsWith('image')) {
+            return next(new AppError(MSG.INVALID_FILE, 400));
         }
+
+        const response = await cloudinary.uploader.upload(req.files.image.path, {
+            resource_type: 'image',
+            folder: "uploads/",
+            secure: true
+        });
+
+        res.status(200).json({
+            message: 'Image uploaded.',
+            url: response.url,
+            public_id: response.public_id
+        });
     }
-})
-
-const upload = multer({ storage: storage })
-
-export const uploadImage = upload.single('image');
-export const uploadSuccess = (req, res) => res
-    .status(200)
-    .json({ message: 'Image uploaded.', fileName: res.req.file.filename })
+);

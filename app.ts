@@ -1,14 +1,13 @@
 import * as express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import globalErrorController from './src/controllers/globalError.controller';
 import * as path from 'path';
 import * as dotenv from 'dotenv';
+import globalErrorController from './src/controllers/globalError.controller';
 import AppError from './src/utils/AppError';
 
 // routes
 import articleRouter from './src/routes/v1/article.route';
-import articleRouterV2 from './src/routes/v2/article.route';
 import authenticationRouter from './src/routes/v1/authentication.route';
 import userRouter from './src/routes/v1/user.route';
 
@@ -35,10 +34,6 @@ app.use(cookieParser());
 app.use('/api/v1/article', articleRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/auth', authenticationRouter);
-
-//  version 2 routes
-app.use('/api/v2/article', articleRouterV2);
-
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));

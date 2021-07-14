@@ -1,14 +1,16 @@
-const jwt = require('jsonwebtoken');
-const promisify = require('util').promisify;
-const UserModel = require('../models/user.model');
-const MSG = require('../constant/message.constant');
-const catchAsync = require('../utils/catchAsync');
-const AppError = require('../utils/AppError');
+import { Response, NextFunction } from 'express';
+import * as jwt from 'jsonwebtoken';
+import { promisify } from 'node:util';
+import UserModel, { IUserDocument } from '../models/v1/user.model';
+import AppError from '../utils/AppError';
+import catchAsync from '../utils/catchAsync';
+import MSG from '../constant/message.constant';
+import { IUserInfoRequest } from '../types/request.type';
 
 const protect = catchAsync(
-    async (req, res, next) => {
-        const secret = process.env.SERVER_SECRET;
-        let jwtToken, decoded;
+    async (req: IUserInfoRequest, res: Response, next: NextFunction) => {
+        const secret: string = process.env.SERVER_SECRET;
+        let jwtToken: string, decoded;
 
         if (req.cookies.jwt) {
 
@@ -18,9 +20,9 @@ const protect = catchAsync(
             return next(new AppError(MSG.NOT_AUTHORIZED, 401))
         }
 
-        decoded = await promisify(jwt.verify)(jwtToken, secret);
+        decoded = await promisify<string, string, any>(jwt.verify)(jwtToken, secret);
 
-        const existingUser = await UserModel.findById(decoded.id);
+        const existingUser: IUserDocument = await UserModel.findById(decoded.id);
 
         if (!existingUser) return next(new AppError(MSG.NOT_AUTHORIZED, 401))
 
@@ -35,4 +37,4 @@ const protect = catchAsync(
     }
 );
 
-module.exports = protect;
+export default protect;

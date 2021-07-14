@@ -1,14 +1,17 @@
-import { Schema, Document, model } from 'mongoose';
+import {Schema, Document, model} from 'mongoose';
 
 export interface IArticleDocument extends Document {
     time: Date,
     title: string,
     subtitle: string,
-    displayImage: string,
-    blocks: Array<{
+    displayImage: {
+        url: string,
+        public_id: string
+    },
+    blocks: {
         type: string,
-        data: Schema.Types.Mixed
-    }>,
+        data: Schema.Types.Mixed 
+    }[],
     author: string
 }
 
@@ -22,7 +25,16 @@ const ArticleSchema = new Schema(
         subTitle: {
             type: String,
         },
-        displayImage: String,
+        displayImage: {
+            url: {
+                type: String,
+                required: [true, 'Display image URL is missing']
+            },
+            public_id: {
+                type: String,
+                required: [true, 'Display image Public ID is missing']
+            },
+        },
         blocks:
         {
             type: [
@@ -36,6 +48,7 @@ const ArticleSchema = new Schema(
                 message: 'Article content is missing.'
             }
         },
+
         author: {
             type: String,
             ref: 'User',

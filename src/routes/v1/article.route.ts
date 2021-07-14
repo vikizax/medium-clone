@@ -1,43 +1,37 @@
-const Router = require('express').Router;
-const create = require('../../controllers/v1/article.controller').create;
-const getAll = require('../../controllers/v1/article.controller').getAll;
-const deleteAll = require('../../controllers/v1/article.controller').deleteAll;
-const get = require('../../controllers/v1/article.controller').get;
-const getMy = require('../../controllers/v1/article.controller').getMy;
-const update = require('../../controllers/v1/article.controller').update;
-const deleteOne = require('../../controllers/v1/article.controller').deleteOne;
-const uploadImage = require('../../controllers/v1/article.controller').uploadImage;
-const uploadSuccess = require('../../controllers/v1/article.controller').uploadSuccess;
-const restrict = require('../../middleware/restrict.middleware');
-const protect = require('../../middleware/protect.middleware');
+import { Router } from 'express';
+import * as controller from '../../controllers/v1/article.controller'
+import protect from '../../middleware/protect.middleware';
+import restrict from '../../middleware/restrict.middleware';
+import multiparty from 'connect-multiparty';
 
 const router = Router();
+const multipartMiddleWare = multiparty();
 
 // get user's created article
 router
     .route('/stories')
-    .get(protect, getMy);
+    .get(protect, controller.getMy);
 
 // open to all
 router
     .get('/', getAll)
-    .get('/:id', get)
+    .get('/:id', controller.get)
 
 // logged in user action  
 router.use(protect);
 
 router
     .route('/')
-    .post(create)
+    .post(controller.create)
 
 // update user's article    
 router
     .route('/:id')
-    .patch(update);
+    .patch(controller.update);
 
 router
     .route('/uploadfile')
-    .post(uploadImage, uploadSuccess)
+    .post(multipartMiddleWare, controller.uploadImage);
 
 router
     .route('/:id')
@@ -49,4 +43,4 @@ router
     .route('/')
     .delete(deleteAll);
 
-module.exports = router;
+export default router;

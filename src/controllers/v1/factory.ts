@@ -1,18 +1,15 @@
-import { Model } from 'mongoose';
-import { IArticleDocument } from '../../models/v1/article.model';
-import { IUserDocument } from '../../models/v1/user.model';
-
+import { Request, Response, NextFunction } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import AppError from '../../utils/AppError';
 import MSG from '../../constant/message.constant';
-
-type modelType = Model<IArticleDocument> | Model<IUserDocument>
+import { IUserInfoRequest } from '../../types/request.type';
+import { modelType, docType } from '../../types/factory.type';
 
 export default {
     createOne: (Model: modelType) => {
         return catchAsync(
-            async (req, res, next) => {
-                const doc = await Model.create(req.body);
+            async (req: Request, res: Response, next: NextFunction) => {
+                const doc: docType = await Model.create(req.body);
 
                 res.status(201).json({
                     message: MSG.CREATE_SUCCESS,
@@ -24,12 +21,12 @@ export default {
 
     getOne: (Model: modelType, popOptions?: string) => {
         return catchAsync(
-            async (req, res, next) => {
+            async (req: Request, res: Response, next: NextFunction) => {
                 let query = Model.findById(req.params.id);
 
                 if (popOptions) query = query.populate(popOptions);
 
-                const doc = await query;
+                const doc: docType = await query;
 
                 if (!doc) return next(new AppError(MSG.NO_DOCUMENT, 404));
 
@@ -41,10 +38,9 @@ export default {
         )
     },
 
-
-    deleteAll: Model => {
+    deleteAll: (Model: modelType) => {
         return catchAsync(
-            async (req, res, next) => {
+            async (req: Request, res: Response, next: NextFunction) => {
 
                 await Model.deleteMany({});
 
@@ -56,11 +52,11 @@ export default {
         )
     },
 
-    updateOne: Model => {
+    updateOne: (Model: modelType) => {
         return catchAsync(
-            async (req, res, next) => {
+            async (req: IUserInfoRequest, res: Response, next: NextFunction) => {
 
-                const doc = await Model.findOneAndUpdate(
+                const doc: docType = await Model.findOneAndUpdate(
                     { _id: req.params.id, author: req.user.id },
                     req.body,
                     {

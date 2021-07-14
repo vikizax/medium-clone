@@ -17,7 +17,6 @@ interface IMailFormat {
     html?: string
 }
 
-
 const sendMail = async ({ to, subject, text, html }: IMailFormat) => {
 
     sgMail.setApiKey(process.env.SENDGRID_API_KEY)
