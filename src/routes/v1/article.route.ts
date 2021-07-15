@@ -2,10 +2,9 @@ import { Router } from 'express';
 import * as controller from '../../controllers/v1/article.controller'
 import protect from '../../middleware/protect.middleware';
 import restrict from '../../middleware/restrict.middleware';
-import multiparty from 'connect-multiparty';
 
 const router = Router();
-const multipartMiddleWare = multiparty();
+// const multipartMiddleWare = multiparty();
 
 // get user's created article
 router
@@ -14,7 +13,7 @@ router
 
 // open to all
 router
-    .get('/', getAll)
+    .get('/', controller.getAll)
     .get('/:id', controller.get)
 
 // logged in user action  
@@ -31,16 +30,16 @@ router
 
 router
     .route('/uploadfile')
-    .post(multipartMiddleWare, controller.uploadImage);
+    .post(controller.multerUpload, controller.uploadImage);
 
 router
     .route('/:id')
-    .delete(deleteOne);
+    .delete(controller.deleteOne);
 
 // logged in +admin user action
-router.use(restrict('admin'))
+router.use<any>(restrict('admin'))
 router
     .route('/')
-    .delete(deleteAll);
+    .delete(controller.deleteAll);
 
 export default router;

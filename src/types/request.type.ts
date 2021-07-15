@@ -6,7 +6,7 @@ export interface IUserInfoRequest extends Request {
         email: string,
         role: string
     },
-    files: {
-        image: { type: string, path: string }
-    }
+    // files: {
+    //     image: { type: string, path: string }
+    // }
 }

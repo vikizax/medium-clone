@@ -1,6 +1,6 @@
 import { Response, NextFunction } from 'express';
 import * as jwt from 'jsonwebtoken';
-import { promisify } from 'node:util';
+import { promisify } from 'util';
 import UserModel, { IUserDocument } from '../models/v1/user.model';
 import AppError from '../utils/AppError';
 import catchAsync from '../utils/catchAsync';

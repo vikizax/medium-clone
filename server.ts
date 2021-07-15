@@ -1,8 +1,8 @@
 import app from './app';
-import * as mongoose from 'mongoose';
+import mongoose from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
 
-const port:  number = parseInt(process.env.PORT) || 5000;
+const port: number = parseInt(process.env.PORT) || 5000;
 
 // Cloudinary config
 cloudinary.config({

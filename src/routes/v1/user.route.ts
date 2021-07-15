@@ -16,7 +16,7 @@ router.use(protect);
 router.get('/me', controller.getOne);
 
 // logged in admin action
-router.use(restrict('admin'));
+router.use<any>(restrict('admin'));
 router
     .route('/:id')
     .get(controller.getOne)

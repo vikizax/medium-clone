@@ -1,8 +1,8 @@
-import * as express from 'express';
+import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import * as path from 'path';
-import * as dotenv from 'dotenv';
+import path from 'path';
+import dotenv from 'dotenv';
 import globalErrorController from './src/controllers/globalError.controller';
 import AppError from './src/utils/AppError';
 
